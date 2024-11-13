@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+.card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+  width: 100%;
+  gap: 20px; 
+}
+.imageContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 300px;
+  height: 200px; 
+}
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 50px;
+  gap: 10px; 
+}
+.coloredTitle {
+  color: orange;
+  margin-bottom: 5px; 
+}
+=======
 .about-content {
   display: flex;
 
@@ -27,3 +58,4 @@ footer {
   background-color: #333;
   color: #fff;
 }
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
