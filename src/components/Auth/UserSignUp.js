@@ -186,7 +186,8 @@ const UserSignUp = () => {
       <Typography variant="body2" mt={1}>
         <Link to="/login">Already have an account? Login!</Link>
       </Typography>
-    </Box>
+    </Box>    </Box>
+
   );
 };
 export default UserSignUp;
