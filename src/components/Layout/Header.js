@@ -20,8 +20,8 @@ const Header = () => {
         <Link to="/browse-chefs">Browse Chefs</Link>
         <Link to="/about-us">About Us</Link>
         {!isLoggedIn && <Link to="/UserSignUp">Sign Up</Link>}
-        {user === "chef" && <Link to="/dashboard">Dashboard</Link>}
-        {user === "user" && <Link to="/orders">Orders</Link>}
+        {user != "chef" && <Link to="/dashboard">Dashboard</Link>}
+        {user != "user" && <Link to="/orders">Orders</Link>}
         {user === "user" && <Link to="/user-profile">Profile</Link>}
       </nav>
     </header>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
 import "./Chef.css";
-import Orders from "./../Orders/Orders";
 
 const ProfileForm = () => {
   const [profile, setProfile] = useState({
