@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { Box } from "@mui/material";
 
 const UserDashboard = () => {
   const [profile, setProfile] = useState({
@@ -99,7 +100,7 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="profile-form-container">
+    <Box className="profile-form-container">
       <form onSubmit={handleSubmit} className="profile-form">
         <h2>Your Profile</h2>
         <input
@@ -128,7 +129,7 @@ const UserDashboard = () => {
         <button type="submit">Update Profile</button>
       </form>
 
-      <div className="password-update-container">
+      <Box className="password-update-container">
         <form onSubmit={handlePasswordChange}>
           <h2>Change Password</h2>
           <input
@@ -140,8 +141,8 @@ const UserDashboard = () => {
           />
           <button type="submit">Change Password</button>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

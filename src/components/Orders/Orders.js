@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Typography, Button, CardMedia, Box } from "@mui/material";
+
 import Cookies from "js-cookie";
 import "./order.css";
 
@@ -43,31 +45,32 @@ const Orders = () => {
       <>
         {orders.map((order) => {
           return (
-            <div className="order-item">
-              <div className="image-container">
+            <Box className="order-item">
+              <Box className="image-container">
                 {" "}
-                <img
+                <CardMedia
+                  component="img"
                   src={order.image}
                   alt="order-image"
                   className="order-image"
                 />
-                <i>{order.chefName}</i>
-              </div>
-              <div>
+                <Typography>{order.chefName}</Typography>
+              </Box>
+              <Box>
                 {" "}
-                <p>Order: Rs. {order.cost}</p>
-                <p>Time: {order.time}</p>
-                <p>Date: {order.date}</p>
-              </div>{" "}
-              <div>
-                <p>Ordered Items:</p>
+                <Typography>Order: Rs. {order.cost}</Typography>
+                <Typography>Time: {order.time}</Typography>
+                <Typography>Date: {order.date}</Typography>
+              </Box>{" "}
+              <Box>
+                <Typography>Ordered Items:</Typography>
                 <ul>
                   {order.selectedItems.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
       </>
@@ -75,9 +78,9 @@ const Orders = () => {
   };
 
   return (
-    <div className="profile-form-container">
+    <Box className="profile-form-container">
       {orders.length > 0 ? renderOrder(orders) : "No orders"}
-    </div>
+    </Box>
   );
 };
 

@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 .card-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-top: 30px;
   width: 100%;
-  gap: 20px; 
+  gap: 20px;
 }
 .imageContainer {
   flex: 1;
@@ -14,7 +13,7 @@
   justify-content: flex-start;
   padding: 10px;
   width: 300px;
-  height: 200px; 
+  height: 200px;
 }
 .detailsContainer {
   display: flex;
@@ -22,40 +21,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   margin-top: 50px;
-  gap: 10px; 
+  gap: 10px;
 }
 .coloredTitle {
   color: orange;
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
 }
-=======
-.about-content {
-  display: flex;
-
-  background-color: #f9a20048;
-  padding: 15px;
-  margin-top: px;
-}
-
-.about-content img {
-  max-width: 100%;
-  height: auto;
-  margin-right: 20px;
-}
-
-.text-content {
-  flex: 1;
-}
-
-.text-content h2 {
-  margin-bottom: 10px;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
-  padding: 10px 0;
-  background-color: #333;
-  color: #fff;
-}
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d

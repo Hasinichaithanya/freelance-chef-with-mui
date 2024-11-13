@@ -14,21 +14,12 @@ import Aboutus from "./components/AboutUs/Aboutus";
 import UserDashboard from "./components/UserDashboard/UserDashboard";
 import Orders from "./components/Orders/Orders";
 
-<<<<<<< HEAD
 const App = () => {
-  const isAuthenticated = true; 
+  const isAuthenticated = true;
 
   return (
     <Router>
       <Header />
-=======
-const App = ({ themeBtn }) => {
-  const isAuthenticated = true; // Replace with your actual authentication logic
-
-  return (
-    <Router>
-      <Header themeBtn={themeBtn} />
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
       <div className="container">
         <Routes>
           <Route path="/" element={<Home />} />

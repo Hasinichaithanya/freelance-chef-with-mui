@@ -4,13 +4,10 @@
   padding: 20px;
   margin: 20px;
   text-align: center;
-<<<<<<< HEAD
-=======
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   width: 200px;
 }
 .chef-profile:hover {
@@ -40,22 +37,14 @@
   border-radius: 6px;
   padding: 14px;
 }
-<<<<<<< HEAD
 .btns-container {
-=======
-/* .btns-container {
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   position: relative;
   bottom: -4px;
-<<<<<<< HEAD
 }
-=======
-} */
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 .chef-profile p {
   margin: 5px 0;
 }
@@ -83,24 +72,17 @@
 
 .profile-form input,
 .profile-form textarea,
-<<<<<<< HEAD
-.password-update-container input {
-=======
 .password-update-container input,
 .time-input {
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-<<<<<<< HEAD
-=======
 .time-input {
   width: 95%;
 }
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 
 .profile-form button,
 .password-update-container button {
@@ -144,16 +126,10 @@
   border-radius: 5px;
 }
 .modal-image {
-<<<<<<< HEAD
-  height: 150px;
-  width: 150px;
-  border-radius: 10px;
-=======
   max-width: 250px;
   height: 250px;
   border-radius: 50%;
   margin-top: 10px;
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 }
 .modal-btn {
   background-color: #feac4d;

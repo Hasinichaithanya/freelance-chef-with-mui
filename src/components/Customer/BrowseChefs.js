@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Spinner from "react-bootstrap/Spinner";
-<<<<<<< HEAD
-
-import ChefProfile from "../Chef/Profile";
-=======
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
 import ChefProfile from "../Chef/Profile";
-import { Button, Typography, CardMedia, Box, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 import "./Customer.css";
 
 const BrowseChefs = () => {
@@ -36,11 +29,7 @@ const BrowseChefs = () => {
         "https://mini-project-backend-i3zm.onrender.com/get-all"
       );
       const data = await response.json();
-<<<<<<< HEAD
-      console.log(data.chefsList);
-=======
       // console.log(data.chefsList);
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
       setChefs(data.chefsList);
       setFilteredChefs(sortChefsByCost(data.chefsList));
       setIsLoading(false);
@@ -93,8 +82,8 @@ const BrowseChefs = () => {
   };
 
   return (
-    <div className="browse-chefs">
-      <div>
+    <Box className="browse-chefs">
+      <Box>
         <input
           type="text"
           placeholder="Search by food items..."
@@ -109,15 +98,8 @@ const BrowseChefs = () => {
           <option value="asc">Cost: Low to High</option>
           <option value="desc">Cost: High to Low</option>
         </select>
-      </div>
+      </Box>
       {isLoading ? (
-<<<<<<< HEAD
-        <div>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-=======
         // <div>
         //   <Spinner animation="border" role="status">
         //     <span className="visually-hidden">Loading...</span>
@@ -153,7 +135,6 @@ const BrowseChefs = () => {
             </Grid>
           ))}
         </Grid>
->>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
       ) : (
         <>
           {filteredChefs.length > 0 ? (
@@ -167,7 +148,7 @@ const BrowseChefs = () => {
           )}
         </>
       )}
-    </div>
+    </Box>
   );
 };
 
