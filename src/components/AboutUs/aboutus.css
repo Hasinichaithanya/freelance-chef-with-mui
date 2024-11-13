@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .card-container {
   display: flex;
   flex-direction: row;
@@ -27,3 +28,34 @@
   color: orange;
   margin-bottom: 5px; 
 }
+=======
+.about-content {
+  display: flex;
+
+  background-color: #f9a20048;
+  padding: 15px;
+  margin-top: px;
+}
+
+.about-content img {
+  max-width: 100%;
+  height: auto;
+  margin-right: 20px;
+}
+
+.text-content {
+  flex: 1;
+}
+
+.text-content h2 {
+  margin-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px 0;
+  background-color: #333;
+  color: #fff;
+}
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d

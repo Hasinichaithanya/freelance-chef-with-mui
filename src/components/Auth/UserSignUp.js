@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import {
   Box, TextField,
   Button, Typography,
@@ -9,6 +10,10 @@ import {
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
+=======
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 
 const UserSignUp = () => {
   const [user, setUser] = useState({
@@ -18,7 +23,11 @@ const UserSignUp = () => {
     location: "Nizamabad",
   });
   const [errors, setErrors] = useState({});
+<<<<<<< HEAD
   const navigate = useNavigate();
+=======
+  const navigate = useNavigate(); // Initialize useNavigate
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 
   const validateForm = () => {
     const newErrors = {};
@@ -84,6 +93,7 @@ const UserSignUp = () => {
   };
 
   return (
+<<<<<<< HEAD
     <Box className="auth-container" display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" gutterBottom>
         Sign Up
@@ -315,3 +325,59 @@ export default UserSignUp;
 // };
 
 // export default UserSignUp;
+=======
+    <div className="auth-container">
+      <h2>Sign Up</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+          value={user.name}
+          onChange={handleChange}
+        />
+        <br />
+        <input
+          type="mail"
+          name="mail"
+          placeholder="Email"
+          value={user.mail}
+          onChange={handleChange}
+        />{" "}
+        <br />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={user.password}
+          onChange={handleChange}
+        />{" "}
+        <br />
+        <select
+          name="location"
+          value={user.location}
+          onChange={handleChange}
+          className="location"
+        >
+          <option>Nizamabad</option>
+          <option>Banjara Hills</option>
+          <option>Jubilee Hills</option>
+          <option>Charminar</option>
+          <option>Secunderabad</option>
+          <option>Karimnagar</option>
+          <option>Warangal</option>
+          <option>Khammam</option>
+        </select>
+        <button type="submit">Sign Up</button>
+      </form>{" "}
+      <br />
+      <Link to="/register">Register as Chef?</Link>
+      <br />
+      <br />
+      <Link to="/login">Already have an account? Login!</Link>
+    </div>
+  );
+};
+
+export default UserSignUp;
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d

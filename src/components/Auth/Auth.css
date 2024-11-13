@@ -1,4 +1,5 @@
 .auth-container {
+<<<<<<< HEAD
   max-width: 350px;
   margin: 0 auto;
   padding: 24px;
@@ -21,6 +22,8 @@
 
 
 /* .auth-container {
+=======
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -68,4 +71,8 @@ input {
   justify-content: center;
   border: 1px dotted;
   width: 50%;
+<<<<<<< HEAD
 } */
+=======
+}
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d

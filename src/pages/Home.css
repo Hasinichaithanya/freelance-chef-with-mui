@@ -1,4 +1,5 @@
 .home {
+<<<<<<< HEAD
   position: relative;
   text-align: center;
 }
@@ -30,3 +31,12 @@
 .button:hover {
   background-color: #e91e63;
 }
+=======
+  text-align: center;
+  padding: 50px;
+}
+
+.home h2 {
+  margin-bottom: 20px;
+}
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d

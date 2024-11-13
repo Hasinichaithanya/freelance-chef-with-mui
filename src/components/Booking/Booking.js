@@ -1,8 +1,25 @@
 // BookingModal.js
 import React, { useState } from "react";
+<<<<<<< HEAD
 import Modal from "react-modal";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+=======
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {
+  Button,
+  Typography,
+  Box,
+  InputLabel,
+  TextField,
+  Checkbox,
+} from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
 
 import "./Booking.css";
 
@@ -11,7 +28,11 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   const [time, setTime] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate(); // Initialize useNavigate
+<<<<<<< HEAD
 
+=======
+  // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(item)) {
@@ -63,6 +84,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   };
 
   return (
+<<<<<<< HEAD
     <Modal isOpen={isOpen} onRequestClose={closeModal} className="modal">
       <h2>Book Chef</h2>
       <form onSubmit={handleBooking} className="form">
@@ -112,6 +134,74 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
         Cancel
       </button>
     </Modal>
+=======
+    <Dialog
+      open={isOpen}
+      onRequestClose={closeModal}
+      contentLabel="Book Chef"
+      maxWidth="md"
+      fullWidth="true"
+    >
+      <Typography variant="subtitle1">Book Chef</Typography>
+      <DialogTitle>Book Chef</DialogTitle>
+      <DialogContent>
+        <Box onSubmit={handleBooking} className="form">
+          <Box className="form-group">
+            <InputLabel>Date:</InputLabel>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+              variant="outlined"
+              className="time-input"
+            />
+          </Box>
+          <Box className="form-group">
+            <InputLabel>Time:</InputLabel>
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              required
+              className="time-input"
+            />
+          </Box>
+          <Box className="form-group">
+            <InputLabel>Items:</InputLabel>
+            {items.map((item, index) => (
+              <Box key={index} className="checkbox-group">
+                <Checkbox
+                  // type="checkbox"
+                  id={item}
+                  value={item}
+                  checked={selectedItems.includes(item)}
+                  onChange={() => handleCheckboxChange(item)}
+                  className="checkbox"
+                />
+                <InputLabel htmlFor={item} className="checkbox-label">
+                  {item}
+                </InputLabel>
+              </Box>
+            ))}
+          </Box>
+          <Box className="form-group" sx={{ mt: 2 }}>
+            <Button type="submit" variant="contained" color="warning">
+              Book
+            </Button>
+          </Box>
+        </Box>
+      </DialogContent>
+      <Box>
+        <DialogActions>
+          {" "}
+          <Button onClick={closeModal} variant="contained" color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Box>
+    </Dialog>
+>>>>>>> e814dd919dcb57d43fbbad08a9b7e57c15b53b1d
   );
 };
 
