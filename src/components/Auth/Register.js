@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 const ProfileForm = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
   const [profile, setProfile] = useState({
     name: "",
     specialties: "",
@@ -81,14 +81,12 @@ const ProfileForm = () => {
       const result = await response.json();
       console.log(result.userDetails.insertedId);
       if (response.ok) {
-        // Set cookies for 10 days
         Cookies.set("userId", JSON.stringify(result.userDetails.insertedId), {
           expires: 10,
         });
         Cookies.set("user", "Chef", {
           expires: 10,
         });
-        // Navigate to home page programmatically using useNavigate
         navigate("/");
       } else {
         console.error("Registration failed:", result);
@@ -109,7 +107,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.name && <p className="error">*{errors.name}</p>}
-      <br />
       <input
         type="mail"
         name="mail"
@@ -118,7 +115,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.mail && <p className="error">*{errors.mail}</p>}
-      <br />
       <input
         type="password"
         name="password"
@@ -127,7 +123,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.password && <p className="error">*{errors.password}</p>}
-      <br />
       <input
         type="number"
         name="experience"
@@ -136,7 +131,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.experience && <p className="error">*{errors.experience}</p>}
-      <br />
       <input
         type="number"
         name="pricePerMeal"
@@ -145,7 +139,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.pricePerMeal && <p className="error">*{errors.pricePerMeal}</p>}
-      <br />
       <select name="location" value={profile.location} onChange={handleChange}>
         <option>Nizamabad</option>
         <option>Banjara Hills</option>
@@ -156,7 +149,6 @@ const ProfileForm = () => {
         <option>Warangal</option>
         <option>Khammam</option>
       </select>
-      <br />
       <input
         type="text"
         name="fooditems"
@@ -165,7 +157,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.fooditems && <p className="error">*{errors.fooditems}</p>}
-      <br />
       <div>
         <label>Upload your image</label>{" "}
         <FileBase64
@@ -175,7 +166,6 @@ const ProfileForm = () => {
         />
       </div>
       {errors.image && <p className="error">*{errors.image}</p>}
-      <br />
       <textarea
         name="specialties"
         placeholder="Describe yourself"
@@ -183,7 +173,6 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.specialties && <p className="error">*{errors.specialties}</p>}
-      <br />
       <button className="submit" type="submit">
         Register
       </button>

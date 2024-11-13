@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Box, TextField,
+  Button, Typography
+} from "@mui/material";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import "./Auth.css";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -9,7 +14,7 @@ const Login = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -32,7 +37,7 @@ const Login = () => {
       email: user.mail,
       password: user.password,
     };
-    console.log(object);
+
     const options = {
       method: "POST",
       headers: {
@@ -47,8 +52,8 @@ const Login = () => {
         options
       );
       const result = await response.json();
-      if (result.Message) {
-        Cookies.set("userId", JSON.stringify(result.userId), {
+      if (result.message) {
+        Cookies.set("userId", JSON.stringify(result.id), {
           expires: 10,
         });
         Cookies.set("user", result.user, {
@@ -72,28 +77,63 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
+    <Box className="auth-container" display="flex" flexDirection="column" alignItems="center">
+      <Typography variant="h4" gutterBottom>
+        Login
+      </Typography>
+
+      <Box component="form" onSubmit={handleSubmit} width="100%" maxWidth="400px">
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Email"
           type="email"
+          variant="outlined"
           name="mail"
-          placeholder="Email"
           value={user.mail}
           onChange={handleChange}
-        />{" "}
-        <br />
-        <input
+          placeholder="Enter your email"
+          required
+          error={Boolean(errors.mail)}
+          helperText={errors.mail}
+        />
+
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Password"
           type="password"
+          variant="outlined"
           name="password"
-          placeholder="Password"
           value={user.password}
           onChange={handleChange}
-        />{" "}
-        <br />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          placeholder="Enter your password"
+          required
+          error={Boolean(errors.password)}
+          helperText={errors.password}
+        />
+
+        <Button
+          fullWidth
+          type="submit"
+          variant="contained"
+          sx={{
+            backgroundColor: 'orange',
+            color: 'white',
+            marginTop: 2,
+            '&:hover': {
+              backgroundColor: '#ff8c00',
+            },
+          }}
+        >
+          Login
+        </Button>
+      </Box>
+
+      <Typography variant="body2" sx={{ marginTop: 2 }}>
+        <Link to="/register">Don't have an account? Sign Up!</Link>
+      </Typography>
+    </Box>
   );
 };
 

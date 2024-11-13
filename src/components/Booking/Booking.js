@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import { Button, Typography, Box, InputLabel, Checkbox } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {
+  Button,
+  Typography,
+  Box,
+  InputLabel,
+  TextField,
+  Checkbox,
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,7 +20,8 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize useNavigate
+  // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(item)) {
