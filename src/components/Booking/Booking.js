@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import {
-  Button,
-  Typography,
-  Box,
-  InputLabel,
-  TextField,
-  Checkbox,
-} from "@mui/material";
+import { Button, Typography, Box, InputLabel, Checkbox } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";

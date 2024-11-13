@@ -94,100 +94,106 @@ const UserSignUp = () => {
       flexDirection="column"
       alignItems="center"
     >
-    <Box className="auth-container" display="flex" flexDirection="column" alignItems="center">
-      <Typography variant="h4" gutterBottom>
-        Sign Up
-      </Typography>
-
       <Box
-        component="form"
-        onSubmit={handleSubmit}
-        width="100%"
-        maxWidth="400px"
+        className="auth-container"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
       >
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Name"
-          variant="outlined"
-          name="name"
-          value={user.name}
-          onChange={handleChange}
-          placeholder="Enter your name"
-          required
-        />
-
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Email"
-          type="email"
-          variant="outlined"
-          name="mail"
-          value={user.mail}
-          onChange={handleChange}
-          placeholder="Enter your email"
-          required
-        />
-
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Password"
-          type="password"
-          variant="outlined"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Enter your password"
-          required
-        />
-
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <InputLabel>Location</InputLabel>
-          <Select
-            name="location"
-            value={user.location}
-            onChange={handleChange}
-            label="Location"
-            required
-          >
-            <MenuItem value="Nizamabad">Nizamabad</MenuItem>
-            <MenuItem value="Banjara Hills">Banjara Hills</MenuItem>
-            <MenuItem value="Jubilee Hills">Jubilee Hills</MenuItem>
-            <MenuItem value="Charminar">Charminar</MenuItem>
-            <MenuItem value="Secunderabad">Secunderabad</MenuItem>
-            <MenuItem value="Karimnagar">Karimnagar</MenuItem>
-            <MenuItem value="Warangal">Warangal</MenuItem>
-            <MenuItem value="Khammam">Khammam</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Button
-          fullWidth
-          type="submit"
-          variant="contained"
-          sx={{
-            backgroundColor: "orange",
-            color: "white",
-            marginTop: 2,
-            "&:hover": {
-              backgroundColor: "#ff8c00",
-            },
-          }}
-        >
+        <Typography variant="h4" gutterBottom>
           Sign Up
-        </Button>
-      </Box>
+        </Typography>
 
-      <Typography variant="body2" sx={{ marginTop: 2 }}>
-        <Link to="/register">Register as Chef?</Link>
-      </Typography>
-      <Typography variant="body2" mt={1}>
-        <Link to="/login">Already have an account? Login!</Link>
-      </Typography>
-    </Box>    </Box>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          width="100%"
+          maxWidth="400px"
+        >
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Name"
+            variant="outlined"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+            placeholder="Enter your name"
+            required
+          />
 
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
+            type="email"
+            variant="outlined"
+            name="mail"
+            value={user.mail}
+            onChange={handleChange}
+            placeholder="Enter your email"
+            required
+          />
+
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Password"
+            type="password"
+            variant="outlined"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+            required
+          />
+
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel>Location</InputLabel>
+            <Select
+              name="location"
+              value={user.location}
+              onChange={handleChange}
+              label="Location"
+              required
+            >
+              <MenuItem value="Nizamabad">Nizamabad</MenuItem>
+              <MenuItem value="Banjara Hills">Banjara Hills</MenuItem>
+              <MenuItem value="Jubilee Hills">Jubilee Hills</MenuItem>
+              <MenuItem value="Charminar">Charminar</MenuItem>
+              <MenuItem value="Secunderabad">Secunderabad</MenuItem>
+              <MenuItem value="Karimnagar">Karimnagar</MenuItem>
+              <MenuItem value="Warangal">Warangal</MenuItem>
+              <MenuItem value="Khammam">Khammam</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "orange",
+              color: "white",
+              marginTop: 2,
+              "&:hover": {
+                backgroundColor: "#ff8c00",
+              },
+            }}
+          >
+            Sign Up
+          </Button>
+        </Box>
+
+        <Typography variant="body2" sx={{ marginTop: 2 }}>
+          <Link to="/register">Register as Chef?</Link>
+        </Typography>
+        <Typography variant="body2" mt={1}>
+          <Link to="/login">Already have an account? Login!</Link>
+        </Typography>
+      </Box>{" "}
+      {errors && <p>{errors}</p>}
+    </Box>
   );
 };
 export default UserSignUp;

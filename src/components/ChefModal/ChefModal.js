@@ -6,7 +6,6 @@ import {
   Box,
   TextField,
   FormControl,
-  Chip,
 } from "@mui/material";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";

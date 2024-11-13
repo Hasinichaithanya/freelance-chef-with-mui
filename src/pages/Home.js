@@ -30,7 +30,7 @@ const Home = () => {
         >
           Discover amazing chefs and personalized culinary experiences.
         </Typography>
-        {user == undefined && (
+        {user === undefined && (
           <Button
             href="#"
             variant="contained"

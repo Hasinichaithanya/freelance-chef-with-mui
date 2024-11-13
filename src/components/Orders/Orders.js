@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, CardMedia, Box } from "@mui/material";
+import { Typography, CardMedia, Box } from "@mui/material";
 
 import Cookies from "js-cookie";
 import "./order.css";

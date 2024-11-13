@@ -210,7 +210,7 @@ const ProfileForm = () => {
       <div className="profile-details">
         <h2>Profile Details</h2>
         <p>
-          <strong>Likes:</strong> {!profile.likes == 0 ? profile.likes : "0"}
+          <strong>Likes:</strong> {!profile.likes === 0 ? profile.likes : "0"}
         </p>
         <h3>Comments:</h3>
         {!profile.comments == [] ? (
