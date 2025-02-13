@@ -101,20 +101,9 @@ const BrowseChefs = () => {
         </select>
       </Box>
       {isLoading ? (
-        // <div>
-        //   <Spinner animation="border" role="status">
-        //     <span className="visually-hidden">Loading...</span>
-        //   </Spinner>
-        // </div>
         <Grid container rowSpacing={2}>
           {Array.from({ length: 10 }).map((_, index) => (
-            <Grid
-              key={index}
-              // spacing={3}
-              // rowSpacing={5}
-              // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              size={{ xs: 6, md: 3 }}
-            >
+            <Grid key={index} size={{ xs: 6, md: 3 }}>
               <Skeleton
                 variant="circular"
                 width={100}

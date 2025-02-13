@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { Button, Typography, Box, InputLabel, Checkbox } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,8 +13,9 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
-  // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [bookedDates, setBookedDates] = useState([]);
+
+  const navigate = useNavigate();
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(item)) {
@@ -25,6 +26,24 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
     });
   };
 
+  useEffect(() => {
+    console.log(chefId);
+    const fetchDates = async () => {
+      const response = await fetch(
+        `https://mini-project-backend-i3zm.onrender.com/bookings/${chefId}`,
+        {
+          method: "GET",
+        }
+      );
+      const res = await response.json();
+      console.log(res.bookings);
+
+      if (response.status == 200) {
+        setBookedDates(res.bookings);
+      }
+    };
+    fetchDates();
+  }, []);
   const handleBooking = async (e) => {
     e.preventDefault();
     const userId = Cookies.get("user");
@@ -61,14 +80,18 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
     }
   };
 
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    if (bookedDates.includes(selectedDate)) {
+      alert("This date is already booked. Please select another date.");
+      setDate("");
+    } else {
+      setDate(selectedDate);
+    }
+  };
+
   return (
-    <Dialog
-      open={isOpen}
-      onRequestClose={closeModal}
-      contentLabel="Book Chef"
-      maxWidth="md"
-      fullWidth="true"
-    >
+    <Dialog open={isOpen} maxWidth="md" fullWidth={true}>
       <Typography variant="subtitle1">Book Chef</Typography>
       <DialogTitle>Book Chef</DialogTitle>
       <DialogContent>
@@ -78,10 +101,12 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
             <input
               type="date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={handleDateChange}
               required
               variant="outlined"
               className="time-input"
+              min={new Date().toISOString().split("T")[0]}
+              onKeyDown={(e) => e.preventDefault()}
             />
           </Box>
           <Box className="form-group">

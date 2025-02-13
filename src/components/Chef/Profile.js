@@ -10,10 +10,9 @@ import ChefModal from "../ChefModal/ChefModal";
 import "./Chef.css";
 
 const ChefProfile = ({ chef = {} }) => {
-  // console.log(chef);
   const [ChefModalIsOpen, setChefModalIsOpen] = useState(false);
   const [likes, setLikes] = useState(chef.likes || 0);
-  // const [selectedChefId, setSelectedChefId] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
 
   const openChefModal = () => {
     console.log("Opening ChefModal...", ChefModalIsOpen);
@@ -24,50 +23,21 @@ const ChefProfile = ({ chef = {} }) => {
     setChefModalIsOpen(false);
   };
 
-  // const handleCommentChange = (event) => {
-  //   setNewComment(event.target.value);
-  // };
-
-  // const handleCommentSubmit = async (event) => {
-  //   event.preventDefault();
-  //   if (newComment.trim() === "") return;
-
-  //   const updatedComments = [...comments, newComment];
-
-  //   try {
-  //     const response = await fetch(
-  //       `https://mini-project-backend-i3zm.onrender.com/update-comments/${chef._id}`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ comments: updatedComments }),
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       setComments(updatedComments);
-  //       setNewComment("");
-  //     } else {
-  //       console.error("Failed to update comments");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
   const handleLike = async () => {
     try {
+      setIsLiked((prev) => !prev);
       const response = await fetch(
         `https://mini-project-backend-i3zm.onrender.com/update-likes/${chef._id}`,
         {
           method: "POST",
+          body: JSON.stringify({ isLiked }),
         }
       );
 
       if (response.ok) {
-        setLikes(likes + 1);
+        if (isLiked) {
+          setLikes(likes + 1);
+        } else setLikes(likes - 1);
       } else {
         console.error("Failed to update likes");
       }

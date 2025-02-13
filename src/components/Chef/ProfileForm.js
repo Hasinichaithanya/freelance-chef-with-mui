@@ -10,14 +10,16 @@ const ProfileForm = () => {
     email: "",
     cost: "",
     image: "",
-    location: "",
+    Location: "",
     Experience: "",
     Description: "",
     password: "",
     likes: 0,
+    Fooditems: [],
     comments: [],
   });
-
+  const [newPassword, setNewPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   useEffect(() => {
     const id = Cookies.get("userId");
     console.log(id);
@@ -91,6 +93,11 @@ const ProfileForm = () => {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
+    const id = Cookies.get("userId");
+    if (!id) {
+      console.error("User ID is invalid or not found in cookies");
+      return;
+    }
     try {
       const response = await fetch(
         "https://mini-project-backend-i3zm.onrender.com/change-password",
@@ -98,9 +105,8 @@ const ProfileForm = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
           },
-          body: JSON.stringify({ password: profile.password }),
+          body: JSON.stringify({ id, oldPassword, newPassword }),
         }
       );
 
@@ -200,10 +206,18 @@ const ProfileForm = () => {
           <input
             type="password"
             name="password"
-            placeholder="New Password"
-            value={profile.password}
-            onChange={handleChange}
+            placeholder="Enter your Old Password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
           />
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="Enter your new Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+
           <button type="submit">Change Password</button>
         </form>
       </div>

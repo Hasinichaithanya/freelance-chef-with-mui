@@ -5,7 +5,6 @@ import App from "./App";
 import Modal from "react-modal";
 import reportWebVitals from "./reportWebVitals";
 
-
 Modal.setAppElement("#root");
 const container = document.getElementById("root");
 
@@ -13,7 +12,7 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-      <App  />
+    <App />
   </React.StrictMode>
 );
 

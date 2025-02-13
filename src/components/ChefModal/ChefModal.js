@@ -23,9 +23,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
   const [isModalOpen, setBookingModalOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(chef.comments || []);
-  const [selectedChefId, setSelectedChefId] = useState("");
   const openBookingModal = (chefId) => {
-    setSelectedChefId(chefId);
     setBookingModalOpen(true);
   };
 
@@ -64,11 +62,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
     }
   };
   return (
-    <Dialog
-      open={ChefModalIsOpen}
-      onClose={closeChefModal}
-      contentLabel="Chef Details"
-    >
+    <Dialog open={ChefModalIsOpen} onClose={closeChefModal}>
       <DialogTitle>Chef Details</DialogTitle>
 
       <DialogContent>
@@ -128,12 +122,6 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
             )}
           </List>
         </Box>
-        {/* <p>
-          <strong>Specialties:</strong>{" "}
-          {chef.Fooditems
-            ? chef.Fooditems.join(", ")
-            : "Specialties not available"}
-        </p> */}
         <FormControl className="form-modal" onSubmit={handleCommentSubmit}>
           <TextField
             value={newComment}
@@ -162,7 +150,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
       <BookingModal
         isOpen={isModalOpen}
         closeModal={closeBookingModal}
-        chefId={selectedChefId}
+        chefId={chef._id}
         items={chef.Fooditems}
       />
     </Dialog>

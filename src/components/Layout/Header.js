@@ -10,6 +10,7 @@ const Header = () => {
   console.log(isLoggedIn, user);
   const handleLogOut = () => {
     Cookies.remove(user);
+    Cookies.remove(Cookies.get("userId"));
   };
   return (
     <header>

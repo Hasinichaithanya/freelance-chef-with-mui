@@ -86,7 +86,7 @@ const UserSignUp = () => {
       [name]: value,
     }));
   };
-
+  console.log(errors);
   return (
     <Box
       className="auth-container"
@@ -192,7 +192,7 @@ const UserSignUp = () => {
           <Link to="/login">Already have an account? Login!</Link>
         </Typography>
       </Box>{" "}
-      {errors && <p>{errors}</p>}
+      {/* {errors && <p>{errors.map((err) => err)}</p>} */}
     </Box>
   );
 };
