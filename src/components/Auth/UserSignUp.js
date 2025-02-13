@@ -104,7 +104,7 @@ const UserSignUp = () => {
           Sign Up
         </Typography>
 
-        <Box
+        <form
           component="form"
           onSubmit={handleSubmit}
           width="100%"
@@ -183,7 +183,7 @@ const UserSignUp = () => {
           >
             Sign Up
           </Button>
-        </Box>
+        </form>
 
         <Typography variant="body2" sx={{ marginTop: 2 }}>
           <Link to="/register">Register as Chef?</Link>
