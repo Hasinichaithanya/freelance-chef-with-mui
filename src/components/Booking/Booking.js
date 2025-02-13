@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +44,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
       }
     };
     fetchDates();
-  }, []);
+  }, [chefId]);
   const handleBooking = async (e) => {
     e.preventDefault();
     const userId = Cookies.get("user");
