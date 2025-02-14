@@ -43,7 +43,7 @@ const UserDashboard = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
