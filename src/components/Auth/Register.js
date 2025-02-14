@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 const ProfileForm = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "",
     specialties: "",
@@ -19,7 +19,7 @@ const ProfileForm = () => {
   });
   const [image, setImage] = useState([]);
   const [errors, setErrors] = useState({});
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -79,9 +79,9 @@ const ProfileForm = () => {
         options
       );
       const result = await response.json();
-      console.log(result.userDetails.insertedId);
+      console.log(result);
       if (response.ok) {
-        Cookies.set("userId", JSON.stringify(result.userDetails.insertedId), {
+        Cookies.set("userId", JSON.stringify(result.chefDetails.insertedId), {
           expires: 10,
         });
         Cookies.set("user", "Chef", {
@@ -96,6 +96,9 @@ const ProfileForm = () => {
     }
   };
 
+  const handleSubmitClick = () => {
+    setIsSubmitted(true);
+  };
   return (
     <form onSubmit={handleSubmit} className="register-form">
       <h1>Register as a chef</h1>
@@ -173,7 +176,12 @@ const ProfileForm = () => {
         onChange={handleChange}
       />
       {errors.specialties && <p className="error">*{errors.specialties}</p>}
-      <button className="submit" type="submit">
+      <button
+        className="submit"
+        type="submit"
+        onClick={handleSubmitClick}
+        disabled={isSubmitted}
+      >
         Register
       </button>
     </form>

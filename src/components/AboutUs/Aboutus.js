@@ -89,7 +89,7 @@ const Aboutus = () => {
           </Container>
         </Card>
         {/* Second Card */}
-        <Card className="card-container">
+        <Card className="card-container card-2">
           <Container className="detailsContainer">
             <Typography variant="h5" className="coloredTitle">
               Connecting You with Culinary Talent

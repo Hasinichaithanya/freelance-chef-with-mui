@@ -4,6 +4,7 @@ import "./Home.css";
 import ContactForm from "../components/ContactForm/ContactForm";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -22,11 +23,13 @@ const Home = () => {
         <Typography variant="h5" fontWeight="bold" color="orange">
           Welcome to the Chef Freelance Platform
         </Typography>
+
         <Typography
           variant="body1"
           fontWeight="semibold"
           color="orange"
           sx={{ marginTop: 3 }}
+          className="tag-line"
         >
           Discover amazing chefs and personalized culinary experiences.
         </Typography>
@@ -52,6 +55,27 @@ const Home = () => {
           </Button>
         )}
       </div>
+      <div className="mobile-intro">
+        <Typography variant="h5" fontWeight="bold" color="orange">
+          Welcome to the Chef Freelance Platform
+        </Typography>
+
+        <Typography
+          variant="body1"
+          fontWeight="semibold"
+          color="orange"
+          sx={{ marginTop: 3 }}
+          className="tag-line"
+        >
+          Discover amazing chefs and personalized culinary experiences.
+        </Typography>
+      </div>
+      <Link to="/about-us">
+        <Button color="primary" variant="contained" sx={{ marginTop: "20px" }}>
+          About Us
+        </Button>
+      </Link>
+
       <ContactForm />
     </div>
   );

@@ -28,7 +28,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   };
 
   useEffect(() => {
-    console.log(chefId);
+    // console.log(chefId);
     const fetchDates = async () => {
       const response = await fetch(
         `https://mini-project-backend-i3zm.onrender.com/bookings/${chefId}`,
@@ -37,7 +37,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
         }
       );
       const res = await response.json();
-      console.log(res.bookings);
+      // console.log(res.bookings);
 
       if (response.status == 200) {
         setBookedDates(res.bookings);

@@ -9,9 +9,11 @@ const UserDashboard = () => {
     location: "",
     password: "",
   });
+  const [newPassword, setNewPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const id = Cookies.get("userId");
 
   useEffect(() => {
-    const id = Cookies.get("userId");
     console.log(id);
 
     const fetchProfile = async () => {
@@ -85,7 +87,7 @@ const UserDashboard = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ password: profile.password }),
+          body: JSON.stringify({ user: "user", id, oldPassword, newPassword }),
         }
       );
 
@@ -135,10 +137,18 @@ const UserDashboard = () => {
           <input
             type="password"
             name="password"
-            placeholder="New Password"
-            value={profile.password}
-            onChange={handleChange}
+            placeholder="Enter your Old Password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
           />
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="Enter your new Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+
           <button type="submit">Change Password</button>
         </form>
       </Box>

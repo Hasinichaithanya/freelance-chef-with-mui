@@ -5,6 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import ChefProfile from "../Chef/Profile";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import Cookies from "js-cookie";
 
 import "./Customer.css";
 
@@ -31,8 +32,14 @@ const BrowseChefs = () => {
       );
       const data = await response.json();
       // console.log(data.chefsList);
-      setChefs(data.chefsList);
-      setFilteredChefs(sortChefsByCost(data.chefsList));
+      const loggedInUserId = Cookies.get("userId");
+      // console.log(loggedInUserId);
+      const filteredChefsList = data.chefsList.filter((chef) => {
+        // console.log(chef._id, loggedInUserId.slice(1, -1));
+        return chef._id !== loggedInUserId.slice(1, -1);
+      });
+      setChefs(filteredChefsList);
+      setFilteredChefs(sortChefsByCost(filteredChefsList));
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -52,7 +59,7 @@ const BrowseChefs = () => {
   };
 
   const filterAndSortChefs = () => {
-    console.log(chefs);
+    // console.log(chefs);
     let filteredList = chefs.filter((chef) => {
       const foodItems =
         typeof chef.Fooditems === "string"
@@ -103,7 +110,7 @@ const BrowseChefs = () => {
       {isLoading ? (
         <Grid container rowSpacing={2}>
           {Array.from({ length: 10 }).map((_, index) => (
-            <Grid key={index} size={{ xs: 6, md: 3 }}>
+            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <Skeleton
                 variant="circular"
                 width={100}

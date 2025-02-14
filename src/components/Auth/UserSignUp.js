@@ -40,7 +40,7 @@ const UserSignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    console.log("clikc");
+    console.log("click");
     const object = {
       name: user.name,
       email: user.mail,
@@ -48,19 +48,20 @@ const UserSignUp = () => {
       password: user.password,
     };
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(object),
-    };
-
     try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(object),
+      };
+      console.log(options);
       const response = await fetch(
         "https://mini-project-backend-i3zm.onrender.com/user-signup",
         options
       );
+      console.log(response);
       const result = await response.json();
       console.log(result);
       if (result.message) {
@@ -86,7 +87,7 @@ const UserSignUp = () => {
       [name]: value,
     }));
   };
-  console.log(errors);
+  // console.log(errors);
   return (
     <Box
       className="auth-container"
@@ -104,12 +105,7 @@ const UserSignUp = () => {
           Sign Up
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          width="100%"
-          maxWidth="400px"
-        >
+        <form component="form" onSubmit={handleSubmit} width="100%">
           <TextField
             fullWidth
             margin="normal"
@@ -169,7 +165,7 @@ const UserSignUp = () => {
           </FormControl>
 
           <Button
-            fullWidth
+            // fullWidth
             type="submit"
             variant="contained"
             sx={{
@@ -183,7 +179,7 @@ const UserSignUp = () => {
           >
             Sign Up
           </Button>
-        </Box>
+        </form>
 
         <Typography variant="body2" sx={{ marginTop: 2 }}>
           <Link to="/register">Register as Chef?</Link>

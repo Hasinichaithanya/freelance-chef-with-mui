@@ -106,7 +106,7 @@ const ProfileForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id, oldPassword, newPassword }),
+          body: JSON.stringify({ user: "chef", id, oldPassword, newPassword }),
         }
       );
 

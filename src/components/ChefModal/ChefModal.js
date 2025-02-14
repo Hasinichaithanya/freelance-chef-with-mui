@@ -16,13 +16,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import BookingModal from "../Booking/Booking";
-
+import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
-
+import Tooltip from "@mui/material/Tooltip";
 const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
   const [isModalOpen, setBookingModalOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(chef.comments || []);
+  const user = Cookies.get("user");
+
   const openBookingModal = (chefId) => {
     setBookingModalOpen(true);
   };
@@ -31,10 +33,10 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
     setBookingModalOpen(false);
   };
   const handleCommentChange = (event) => {
+    console.log(event.target.value);
     setNewComment(event.target.value);
   };
-  const handleCommentSubmit = async (event) => {
-    event.preventDefault();
+  const handleCommentSubmit = async () => {
     if (newComment.trim() === "") return;
 
     const updatedComments = [...comments, newComment];
@@ -61,6 +63,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
       console.error("Error:", error);
     }
   };
+
   return (
     <Dialog open={ChefModalIsOpen} onClose={closeChefModal}>
       <DialogTitle>Chef Details</DialogTitle>
@@ -101,7 +104,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
           <Typography variant="subtitle1">Specialities:</Typography>
           <List>
             {chef.Fooditems.map((item) => (
-              <ListItem className="list-item" key={uuidv4()}>
+              <ListItem key={uuidv4()}>
                 <RestaurantMenuIcon /> {item}
               </ListItem>
             )) || "Specialties not available"}
@@ -128,18 +131,44 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
             onChange={handleCommentChange}
             placeholder="Add your comment"
           />
-          <Button type="submit" variant="outlined" color="warning">
-            Comment
-          </Button>
+          <Tooltip
+            title={user === undefined ? "Login to comment" : ""}
+            placement="top-start"
+            arrow
+          >
+            <span>
+              <Button
+                type="submit"
+                variant="outlined"
+                color="warning"
+                disabled={user === undefined}
+              >
+                Comment{" "}
+              </Button>
+            </span>
+          </Tooltip>
         </FormControl>
         <Box sx={{ mt: 2 }}>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={() => openBookingModal(chef._id)}
+          <Tooltip
+            title={
+              user === "Chef"
+                ? "Chefs cannot book other chefs"
+                : user === undefined && "Login to book chef"
+            }
+            placement="right-start"
+            arrow
           >
-            Book Chef
-          </Button>
+            <span>
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={() => openBookingModal(chef._id)}
+                disabled={user === undefined || user === "Chef"}
+              >
+                Book Chef
+              </Button>
+            </span>
+          </Tooltip>
         </Box>
         <DialogActions>
           <Button onClick={closeChefModal} variant="outlined" color="warning">
