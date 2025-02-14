@@ -21,7 +21,7 @@ const UserSignUp = () => {
     password: "",
     location: "Nizamabad",
   });
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -34,7 +34,7 @@ const UserSignUp = () => {
     }
     if (!user.password) newErrors.password = "Password is required.";
 
-    setErrors(newErrors);
+    // setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const handleSubmit = async (e) => {
