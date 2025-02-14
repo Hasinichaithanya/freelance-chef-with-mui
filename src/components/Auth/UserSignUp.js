@@ -105,7 +105,12 @@ const UserSignUp = () => {
           Sign Up
         </Typography>
 
-        <form component="form" onSubmit={handleSubmit} width="100%">
+        <form
+          component="form"
+          onSubmit={handleSubmit}
+          width="100%"
+          maxWidth="400px"
+        >
           <TextField
             fullWidth
             margin="normal"
