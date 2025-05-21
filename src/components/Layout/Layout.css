@@ -31,7 +31,8 @@
   /* width: 75px; */
 }
 .list-item-mobile {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
   color: #f9a300;
   width: 60px !important;
 }
@@ -50,8 +51,9 @@
   }
   .mobile-nav-items {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    align-content: center;
   }
 }
 

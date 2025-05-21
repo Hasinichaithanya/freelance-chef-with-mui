@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Box, TextField,
-  Button, Typography
-} from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
@@ -52,6 +49,7 @@ const Login = () => {
         options
       );
       const result = await response.json();
+      console.log(result);
       if (result.message) {
         Cookies.set("userId", JSON.stringify(result.id), {
           expires: 10,
@@ -60,11 +58,18 @@ const Login = () => {
           expires: 10,
         });
         navigate("/");
+        setErrors({});
       } else {
         console.error("Login failed:", result);
+        setErrors({
+          loginError: result.Message,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
+      setErrors({
+        loginError: error.Message,
+      });
     }
   };
 
@@ -77,12 +82,22 @@ const Login = () => {
   };
 
   return (
-    <Box className="auth-container" display="flex" flexDirection="column" alignItems="center">
+    <Box
+      className="auth-container"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       <Typography variant="h4" gutterBottom>
         Login
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} width="100%" maxWidth="400px">
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        width="100%"
+        maxWidth="400px"
+      >
         <TextField
           fullWidth
           margin="normal"
@@ -118,11 +133,11 @@ const Login = () => {
           type="submit"
           variant="contained"
           sx={{
-            backgroundColor: 'orange',
-            color: 'white',
+            backgroundColor: "orange",
+            color: "white",
             marginTop: 2,
-            '&:hover': {
-              backgroundColor: '#ff8c00',
+            "&:hover": {
+              backgroundColor: "#ff8c00",
             },
           }}
         >
@@ -133,6 +148,7 @@ const Login = () => {
       <Typography variant="body2" sx={{ marginTop: 2 }}>
         <Link to="/register">Don't have an account? Sign Up!</Link>
       </Typography>
+      {errors && <Typography color="red">{errors.loginError}</Typography>}
     </Box>
   );
 };

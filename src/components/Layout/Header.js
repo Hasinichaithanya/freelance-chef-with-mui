@@ -23,7 +23,7 @@ const Header = () => {
   const mobileMenu = () => {
     setIsMobile((prev) => !prev);
   };
-
+  console.log(user);
   return (
     <>
       <nav className="header-container-desktop">
@@ -79,7 +79,7 @@ const Header = () => {
           )}
           {/* </ListItem>
           <ListItem> */}
-          {user !== "undefined" && (
+          {user !== undefined && (
             <Button onClick={handleLogOut} color="black">
               Logout
             </Button>
@@ -143,7 +143,7 @@ const Header = () => {
             )}
             {/* </ListItem>
             <ListItem> */}
-            {user !== "undefined" && (
+            {user !== undefined && (
               <Button onClick={handleLogOut} color="warning">
                 Logout
               </Button>

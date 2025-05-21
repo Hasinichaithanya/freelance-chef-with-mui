@@ -31,12 +31,15 @@ const BrowseChefs = () => {
         "https://mini-project-backend-i3zm.onrender.com/get-all"
       );
       const data = await response.json();
-      // console.log(data.chefsList);
+      console.log(data.chefsList);
       const loggedInUserId = Cookies.get("userId");
       // console.log(loggedInUserId);
       const filteredChefsList = data.chefsList.filter((chef) => {
         // console.log(chef._id, loggedInUserId.slice(1, -1));
-        return chef._id !== loggedInUserId.slice(1, -1);
+        if (loggedInUserId) {
+          return chef._id !== loggedInUserId.slice(1, -1);
+        }
+        return chef;
       });
       setChefs(filteredChefsList);
       setFilteredChefs(sortChefsByCost(filteredChefsList));
