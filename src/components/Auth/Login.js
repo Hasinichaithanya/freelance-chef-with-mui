@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { TextField, Button, Typography, Alert } from "@mui/material";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import "./Auth.css";
+import FormContainer from "../Shared/FormContainer";
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
 const Login = () => {
-  const [user, setUser] = useState({
-    mail: "",
-    password: "",
-  });
+  const [user, setUser] = useState({ mail: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -21,7 +18,6 @@ const Login = () => {
       newErrors.mail = "Email address is invalid.";
     }
     if (!user.password) newErrors.password = "Password is required.";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -30,16 +26,10 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const object = {
-      email: user.mail,
-      password: user.password,
-    };
-
+    const object = { email: user.mail, password: user.password };
     const options = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(object),
     };
 
@@ -49,107 +39,90 @@ const Login = () => {
         options
       );
       const result = await response.json();
-      console.log(result);
       if (result.message) {
-        Cookies.set("userId", JSON.stringify(result.id), {
-          expires: 10,
-        });
-        Cookies.set("user", result.user, {
-          expires: 10,
-        });
+        Cookies.set("userId", JSON.stringify(result.id), { expires: 10 });
+        Cookies.set("user", result.user, { expires: 10 });
         navigate("/");
         setErrors({});
       } else {
-        console.error("Login failed:", result);
-        setErrors({
-          loginError: result.Message,
-        });
+        setErrors({ loginError: result.Message });
       }
     } catch (error) {
-      console.error("Error:", error);
-      setErrors({
-        loginError: error.Message,
-      });
+      setErrors({ loginError: "Something went wrong. Please try again." });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <Box
-      className="auth-container"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
+    <FormContainer
+      title="Welcome Back"
+      subtitle="Sign in to your account"
+      onSubmit={handleSubmit}
     >
-      <Typography variant="h4" gutterBottom>
-        Login
-      </Typography>
+      {errors.loginError && (
+        <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+          {errors.loginError}
+        </Alert>
+      )}
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        width="100%"
-        maxWidth="400px"
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Email"
+        type="email"
+        name="mail"
+        value={user.mail}
+        onChange={handleChange}
+        placeholder="you@example.com"
+        required
+        error={Boolean(errors.mail)}
+        helperText={errors.mail}
+      />
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Password"
+        type="password"
+        name="password"
+        value={user.password}
+        onChange={handleChange}
+        placeholder="Enter your password"
+        required
+        error={Boolean(errors.password)}
+        helperText={errors.password}
+      />
+
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        size="large"
+        startIcon={<LoginOutlinedIcon />}
+        sx={{ mt: 3, mb: 2 }}
       >
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Email"
-          type="email"
-          variant="outlined"
-          name="mail"
-          value={user.mail}
-          onChange={handleChange}
-          placeholder="Enter your email"
-          required
-          error={Boolean(errors.mail)}
-          helperText={errors.mail}
-        />
+        Login
+      </Button>
 
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Password"
-          type="password"
-          variant="outlined"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Enter your password"
-          required
-          error={Boolean(errors.password)}
-          helperText={errors.password}
-        />
-
-        <Button
-          fullWidth
-          type="submit"
-          variant="contained"
-          sx={{
-            backgroundColor: "orange",
-            color: "white",
-            marginTop: 2,
-            "&:hover": {
-              backgroundColor: "#ff8c00",
-            },
-          }}
+      <Typography
+        variant="body2"
+        sx={{ textAlign: "center", color: "text.secondary" }}
+      >
+        Don't have an account?{" "}
+        <Typography
+          component={Link}
+          to="/register"
+          variant="body2"
+          sx={{ color: "primary.dark", fontWeight: 600 }}
         >
-          Login
-        </Button>
-      </Box>
-
-      <Typography variant="body2" sx={{ marginTop: 2 }}>
-        <Link to="/register">Don't have an account? Sign Up!</Link>
+          Sign Up
+        </Typography>
       </Typography>
-      {errors && <Typography color="red">{errors.loginError}</Typography>}
-    </Box>
+    </FormContainer>
   );
 };
 

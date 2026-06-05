@@ -1,40 +1,53 @@
 import React, { useState } from "react";
-import { Card, Box, Button, Snackbar } from "@mui/material";
-import "./ContactForm.css";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Snackbar,
+  Alert,
+  Paper,
+} from "@mui/material";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const ContactForm = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userMessage, setUserMessage] = useState("");
+  const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
-  const [focus, setFocus] = useState({
-    name: false,
-    email: false,
-    message: false,
-  });
 
-  const handleFocus = (field) => {
-    setFocus((prevFocus) => ({ ...prevFocus, [field]: true }));
-  };
-
-  const handleBlur = (field) => {
-    setFocus((prevFocus) => ({ ...prevFocus, [field]: false }));
+  const validateForm = () => {
+    const newErrors = {};
+    if (!userName.trim()) {
+      newErrors.name = "Name is required.";
+    }
+    if (!userEmail.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(userEmail)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+    if (!userMessage.trim()) {
+      newErrors.message = "Message is required.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const object = {
-      name: userName,
-      mail: userEmail,
-      message: userMessage,
+      name: userName.trim(),
+      mail: userEmail.trim(),
+      message: userMessage.trim(),
     };
-    console.log(object);
+
     const options = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(object),
     };
 
@@ -44,85 +57,114 @@ const ContactForm = () => {
         options
       );
       const result = await response.json();
-      console.log(result);
       if (result.message) {
         setOpen(true);
         setUserEmail("");
         setUserMessage("");
         setUserName("");
-      } else {
-        console.error("Login failed:", result);
+        setErrors({});
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
-    <Card className="contact-form-container">
-      <h2>Contact Us</h2>
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <Box className="form-group">
-          <label
-            htmlFor="name"
-            className={userName || focus.name ? "shrink" : ""}
-          >
-            Name:
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            onFocus={() => handleFocus("name")}
-            onBlur={() => handleBlur("name")}
-            required
-          />
+    <Paper
+      elevation={0}
+      sx={{
+        maxWidth: 480,
+        mx: "auto",
+        my: 6,
+        p: { xs: 3, sm: 4 },
+        border: "1px solid",
+        borderColor: "divider",
+      }}
+    >
+      <Box sx={{ textAlign: "center", mb: 3 }}>
+        <Box
+          sx={{
+            display: "inline-flex",
+            p: 1.5,
+            borderRadius: "50%",
+            backgroundColor: "primary.main",
+            mb: 2,
+          }}
+        >
+          <EmailOutlinedIcon sx={{ color: "white", fontSize: 28 }} />
         </Box>
-        <Box className="form-group">
-          <label
-            htmlFor="email"
-            className={userEmail || focus.email ? "shrink" : ""}
-          >
-            Email:
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-            onFocus={() => handleFocus("email")}
-            onBlur={() => handleBlur("email")}
-            required
-          />
-        </Box>
-        <Box className="form-group">
-          <label
-            htmlFor="message"
-            className={userMessage || focus.message ? "shrink" : ""}
-          >
-            Message:
-          </label>
-          <textarea
-            id="message"
-            value={userMessage}
-            onChange={(e) => setUserMessage(e.target.value)}
-            onFocus={() => handleFocus("message")}
-            onBlur={() => handleBlur("message")}
-            required
-          ></textarea>
-        </Box>
-        <Button type="submit">Submit</Button>
-      </form>
+        <Typography variant="h5" sx={{ fontWeight: 700, color: "text.primary" }}>
+          Contact Us
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
+          We'd love to hear from you
+        </Typography>
+      </Box>
+
+      <Box component="form" onSubmit={handleSubmit} noValidate>
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Name"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          error={Boolean(errors.name)}
+          helperText={errors.name}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Email"
+          type="email"
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
+          error={Boolean(errors.email)}
+          helperText={errors.email}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Message"
+          value={userMessage}
+          onChange={(e) => setUserMessage(e.target.value)}
+          multiline
+          rows={4}
+          error={Boolean(errors.message)}
+          helperText={errors.message}
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          startIcon={<SendOutlinedIcon />}
+          sx={{ mt: 2 }}
+        >
+          Send Message
+        </Button>
+      </Box>
+
       <Snackbar
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleClose}
-        message="Message Sent"
-      />
-    </Card>
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          variant="filled"
+          sx={{ borderRadius: 2 }}
+        >
+          Message sent successfully!
+        </Alert>
+      </Snackbar>
+    </Paper>
   );
 };
 

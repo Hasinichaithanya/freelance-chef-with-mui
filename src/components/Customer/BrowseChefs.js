@@ -1,13 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Skeleton from "@mui/material/Skeleton";
-import ChefProfile from "../Chef/Profile";
-import { Box } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+  InputAdornment,
+  Skeleton,
+  Card,
+  Stack,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
 import Cookies from "js-cookie";
-
-import "./Customer.css";
+import ChefProfile from "../Chef/Profile";
+import PageHeader from "../Shared/PageHeader";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 
 const BrowseChefs = () => {
   const [chefs, setChefs] = useState([]);
@@ -31,11 +44,8 @@ const BrowseChefs = () => {
         "https://mini-project-backend-i3zm.onrender.com/get-all"
       );
       const data = await response.json();
-      console.log(data.chefsList);
       const loggedInUserId = Cookies.get("userId");
-      // console.log(loggedInUserId);
       const filteredChefsList = data.chefsList.filter((chef) => {
-        // console.log(chef._id, loggedInUserId.slice(1, -1));
         if (loggedInUserId) {
           return chef._id !== loggedInUserId.slice(1, -1);
         }
@@ -52,17 +62,12 @@ const BrowseChefs = () => {
   };
 
   const sortChefsByCost = (chefsList) => {
-    return chefsList.sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a.cost - b.cost;
-      } else {
-        return b.cost - a.cost;
-      }
+    return [...chefsList].sort((a, b) => {
+      return sortOrder === "asc" ? a.cost - b.cost : b.cost - a.cost;
     });
   };
 
   const filterAndSortChefs = () => {
-    // console.log(chefs);
     let filteredList = chefs.filter((chef) => {
       const foodItems =
         typeof chef.Fooditems === "string"
@@ -73,7 +78,7 @@ const BrowseChefs = () => {
     filteredList = sortChefsByCost(filteredList);
     setFilteredChefs(filteredList);
 
-    if (filteredList.length === 0) {
+    if (filteredList.length === 0 && chefs.length > 0) {
       setErrMsg("No chefs match your search criteria.");
     } else {
       setErrMsg("");
@@ -92,61 +97,100 @@ const BrowseChefs = () => {
     setSortOrder(event.target.value);
   };
 
+  const renderSkeletons = () => (
+    <Grid container spacing={3}>
+      {Array.from({ length: 8 }).map((_, index) => (
+        <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+          <Card sx={{ p: 3, textAlign: "center" }}>
+            <Skeleton
+              variant="circular"
+              width={120}
+              height={120}
+              sx={{ mx: "auto", mb: 2 }}
+            />
+            <Skeleton variant="text" width="60%" sx={{ mx: "auto", mb: 1 }} />
+            <Skeleton variant="text" width="80%" sx={{ mx: "auto", mb: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              height={36}
+              width="50%"
+              sx={{ mx: "auto", borderRadius: 2 }}
+            />
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+
   return (
-    <Box className="browse-chefs">
-      <Box>
-        <input
-          type="text"
+    <Box sx={{ py: 2 }}>
+      <PageHeader
+        title="Browse Chefs"
+        subtitle="Find the perfect chef for your next meal"
+        icon={<RestaurantOutlinedIcon fontSize="large" />}
+      />
+
+      {/* Search & Filter Bar */}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{ mb: 4 }}
+      >
+        <TextField
+          fullWidth
           placeholder="Search by food items..."
           value={searchTerm}
           onChange={handleSearch}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ maxWidth: { sm: 400 } }}
         />
-        <select
-          className="select-options"
-          value={sortOrder}
-          onChange={handleSortOrderChange}
-        >
-          <option value="asc">Cost: Low to High</option>
-          <option value="desc">Cost: High to Low</option>
-        </select>
-      </Box>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <SortIcon fontSize="small" /> Sort by Cost
+            </Box>
+          </InputLabel>
+          <Select
+            value={sortOrder}
+            onChange={handleSortOrderChange}
+            label="Sort by Cost xxx"
+          >
+            <MenuItem value="asc">Cost: Low to High</MenuItem>
+            <MenuItem value="desc">Cost: High to Low</MenuItem>
+          </Select>
+        </FormControl>
+      </Stack>
+
+      {/* Content */}
       {isLoading ? (
-        <Grid container rowSpacing={2}>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <Skeleton
-                variant="circular"
-                width={100}
-                height={100}
-                animation="wave"
-              />
-              <Skeleton
-                variant="rectangular"
-                width={210}
-                height={100}
-                animation="wave"
-              />
-              <Skeleton
-                variant="rounded"
-                width={210}
-                height={100}
-                animation="wave"
-              />
+        renderSkeletons()
+      ) : filteredChefs.length > 0 ? (
+        <Grid container spacing={3}>
+          {filteredChefs.map((chef) => (
+            <Grid key={uuidv4()} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <ChefProfile chef={chef} />
             </Grid>
           ))}
         </Grid>
       ) : (
-        <>
-          {filteredChefs.length > 0 ? (
-            <div className="chefs">
-              {filteredChefs.map((chef) => (
-                <ChefProfile key={uuidv4()} chef={chef} />
-              ))}
-            </div>
-          ) : (
-            <p>{errMsg}</p>
-          )}
-        </>
+        <Box
+          sx={{
+            textAlign: "center",
+            py: 8,
+            color: "text.secondary",
+          }}
+        >
+          <RestaurantOutlinedIcon
+            sx={{ fontSize: 64, color: "divider", mb: 2 }}
+          />
+          <Typography variant="h6">{errMsg || "No chefs available"}</Typography>
+        </Box>
       )}
     </Box>
   );

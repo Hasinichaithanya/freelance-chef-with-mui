@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./Customer.css";
+import { TextField, Button, Box, Typography } from "@mui/material";
+import FormContainer from "../Shared/FormContainer";
 
 const OrderForm = ({ chef }) => {
   const [order, setOrder] = useState({
@@ -9,10 +10,7 @@ const OrderForm = ({ chef }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setOrder((prevOrder) => ({
-      ...prevOrder,
-      [name]: value,
-    }));
+    setOrder((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -20,24 +18,40 @@ const OrderForm = ({ chef }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Order from {chef.name}</h3>
-      <input
-        type="text"
+    <FormContainer
+      title={`Order from ${chef.name}`}
+      maxWidth={400}
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Dish Name"
         name="dish"
-        placeholder="Dish Name"
         value={order.dish}
         onChange={handleChange}
+        required
       />
-      <input
-        type="number"
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Quantity"
         name="quantity"
-        placeholder="Quantity"
+        type="number"
         value={order.quantity}
         onChange={handleChange}
+        inputProps={{ min: 1 }}
+        required
       />
-      <button type="submit">Place Order</button>
-    </form>
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        sx={{ mt: 2 }}
+      >
+        Place Order
+      </Button>
+    </FormContainer>
   );
 };
 

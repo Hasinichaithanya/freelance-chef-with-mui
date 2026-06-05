@@ -1,158 +1,263 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import List from "@mui/material/List";
-// import ListItem from "@mui/material/ListItem";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-
-import "./Layout.css";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  useMediaQuery,
+  useTheme,
+  alpha,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/MenuOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import HomeIcon from "@mui/icons-material/HomeOutlined";
+import RestaurantIcon from "@mui/icons-material/RestaurantOutlined";
+import InfoIcon from "@mui/icons-material/InfoOutlined";
+import PersonAddIcon from "@mui/icons-material/PersonAddOutlined";
+import DashboardIcon from "@mui/icons-material/DashboardOutlined";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBagOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircleOutlined";
+import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 
 const Header = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const isLoggedIn = Cookies.get("userId");
   const user = Cookies.get("user");
   const navigate = useNavigate();
-  // console.log(isLoggedIn, user);
-  const handleLogOut = () => {
-    Cookies.remove(user);
-    Cookies.remove(isLoggedIn);
-    navigate("/");
-  };
-  const mobileMenu = () => {
-    setIsMobile((prev) => !prev);
-  };
-  console.log(user);
-  return (
-    <>
-      <nav className="header-container-desktop">
-        <Link to="/">
-          <img
-            src="https://res.cloudinary.com/dlnpuom7o/image/upload/v1719422571/chef_logo_wtmpko.png"
-            alt="logo"
-            className="logo"
-          />
-        </Link>
-        <List className="ul-items-desktop">
-          {/* <ListItem> */}
-          <Link to="/" className="list-item">
-            Home
-          </Link>
-          {/* </ListItem>
-          <ListItem> */}
-          <Link to="/browse-chefs" className="list-item">
-            All Chefs
-          </Link>
-          {/* </ListItem>
-          <ListItem> */}
-          <Link to="/about-us" className="list-item">
-            About Us
-          </Link>
-          {/* </ListItem>
-          <ListItem> */}
-          {!isLoggedIn && (
-            <Link to="/UserSignUp" className="list-item">
-              Sign Up
-            </Link>
-          )}
-          {/* </ListItem>
-          <ListItem> */}
-          {user === "Chef" && (
-            <Link to="/dashboard" className="list-item">
-              Dashboard
-            </Link>
-          )}
-          {/* </ListItem>
-          <ListItem> */}
-          {user === "user" && (
-            <Link to="/orders" className="list-item">
-              Orders
-            </Link>
-          )}
-          {/* </ListItem>
-          <ListItem> */}
-          {user === "user" && (
-            <Link to="/user-profile" className="list-item">
-              Profile
-            </Link>
-          )}
-          {/* </ListItem>
-          <ListItem> */}
-          {user !== undefined && (
-            <Button onClick={handleLogOut} color="black">
-              Logout
-            </Button>
-          )}
-          {/* </ListItem>{" "} */}
-        </List>
-      </nav>
-      <nav className="header-container-mobile">
-        <Link to="/">
-          <img
-            src="https://res.cloudinary.com/dlnpuom7o/image/upload/v1719422571/chef_logo_wtmpko.png"
-            alt="logo"
-            className="logo"
-          />
-        </Link>
+  const location = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-        <button type="button" onClick={mobileMenu}>
-          <MenuOutlinedIcon />
-        </button>
-      </nav>
-      <div className="menu-items">
-        {isMobile && (
-          <List className="mobile-nav-items">
-            {/* <ListItem> */}
-            <Link to="/" className="list-item list-item-mobile">
-              Home
-            </Link>
-            {/* </ListItem>
-            <ListItem> */}
-            <Link to="/browse-chefs" className="list-item list-item-mobile">
-              All Chefs
-            </Link>
-            {/* </ListItem>
-            <ListItem> */}
-            {!isLoggedIn && (
-              <Link to="/UserSignUp" className="list-item list-item-mobile">
-                Sign Up
-              </Link>
-            )}
-            {/* </ListItem>
-            <ListItem> */}{" "}
-            {user === "Chef" && (
-              <Link to="/dashboard" className="list-item list-item-mobile">
-                Dashboard
-              </Link>
-            )}
-            {/* </ListItem>
-            <ListItem> */}
-            {user === "user" && (
-              <Link to="/orders" className="list-item list-item-mobile">
-                Orders
-              </Link>
-            )}
-            {/* </ListItem>
-            <ListItem>
-              {" "} */}
-            {user === "user" && (
-              <Link to="/user-profile" className="list-item list-item-mobile">
-                Profile
-              </Link>
-            )}
-            {/* </ListItem>
-            <ListItem> */}
-            {user !== undefined && (
-              <Button onClick={handleLogOut} color="warning">
-                Logout
-              </Button>
-            )}
-            {/* </ListItem> */}
-          </List>
+  const handleLogOut = () => {
+    Cookies.remove("user");
+    Cookies.remove("userId");
+    navigate("/");
+    setDrawerOpen(false);
+  };
+
+  const navItems = [
+    { label: "Home", path: "/", icon: <HomeIcon /> },
+    { label: "All Chefs", path: "/browse-chefs", icon: <RestaurantIcon /> },
+    { label: "About Us", path: "/about-us", icon: <InfoIcon /> },
+  ];
+
+  if (!isLoggedIn) {
+    navItems.push({
+      label: "Sign Up",
+      path: "/UserSignUp",
+      icon: <PersonAddIcon />,
+    });
+  }
+
+  if (user === "Chef") {
+    navItems.push({
+      label: "Dashboard",
+      path: "/dashboard",
+      icon: <DashboardIcon />,
+    });
+  }
+
+  if (user === "user") {
+    navItems.push({
+      label: "Orders",
+      path: "/orders",
+      icon: <ShoppingBagIcon />,
+    });
+    navItems.push({
+      label: "Profile",
+      path: "/user-profile",
+      icon: <AccountCircleIcon />,
+    });
+  }
+
+  const isActive = (path) => location.pathname === path;
+
+  const desktopNav = (
+    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+      {navItems.map((item) => (
+        <Button
+          key={item.path}
+          component={Link}
+          to={item.path}
+          sx={{
+            color: isActive(item.path) ? "primary.contrastText" : alpha("#FFFFFF", 0.85),
+            fontWeight: isActive(item.path) ? 700 : 500,
+            fontSize: "0.9rem",
+            px: 2,
+            py: 1,
+            borderRadius: 2,
+            backgroundColor: isActive(item.path)
+              ? alpha("#FFFFFF", 0.15)
+              : "transparent",
+            "&:hover": {
+              backgroundColor: alpha("#FFFFFF", 0.12),
+              transform: "none",
+              boxShadow: "none",
+            },
+          }}
+        >
+          {item.label}
+        </Button>
+      ))}
+      {user !== undefined && (
+        <Button
+          onClick={handleLogOut}
+          variant="outlined"
+          startIcon={<LogoutIcon />}
+          sx={{
+            ml: 1,
+            color: "#FFFFFF",
+            borderColor: alpha("#FFFFFF", 0.4),
+            "&:hover": {
+              borderColor: "#FFFFFF",
+              backgroundColor: alpha("#FFFFFF", 0.1),
+              transform: "none",
+              boxShadow: "none",
+            },
+          }}
+        >
+          Logout
+        </Button>
+      )}
+    </Box>
+  );
+
+  const mobileDrawer = (
+    <Drawer
+      anchor="right"
+      open={drawerOpen}
+      onClose={() => setDrawerOpen(false)}
+      PaperProps={{
+        sx: {
+          width: 280,
+          backgroundColor: "background.paper",
+          borderRadius: "20px 0 0 20px",
+        },
+      }}
+    >
+      <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+        <IconButton onClick={() => setDrawerOpen(false)}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Divider />
+      <List sx={{ px: 1, py: 2 }}>
+        {navItems.map((item) => (
+          <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+            <ListItemButton
+              component={Link}
+              to={item.path}
+              onClick={() => setDrawerOpen(false)}
+              selected={isActive(item.path)}
+              sx={{
+                borderRadius: 2,
+                "&.Mui-selected": {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                  color: "primary.dark",
+                  "& .MuiListItemIcon-root": {
+                    color: "primary.main",
+                  },
+                },
+                "&:hover": {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.06),
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: "text.secondary" }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.label}
+                primaryTypographyProps={{ fontWeight: isActive(item.path) ? 600 : 400 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        {user !== undefined && (
+          <>
+            <Divider sx={{ my: 1 }} />
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={handleLogOut}
+                sx={{
+                  borderRadius: 2,
+                  color: "error.main",
+                  "&:hover": {
+                    backgroundColor: alpha(theme.palette.error.main, 0.06),
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 40, color: "error.main" }}>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Logout"
+                  primaryTypographyProps={{ fontWeight: 500 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </>
         )}
-      </div>
-    </>
+      </List>
+    </Drawer>
+  );
+
+  return (
+    <AppBar
+      position="sticky"
+      sx={{
+        background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
+      }}
+    >
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          px: { xs: 2, md: 4 },
+          minHeight: { xs: 64, md: 72 },
+        }}
+      >
+        <Box
+          component={Link}
+          to="/"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            transition: "opacity 0.2s",
+            "&:hover": { opacity: 0.85 },
+          }}
+        >
+          <Box
+            component="img"
+            src="https://res.cloudinary.com/dlnpuom7o/image/upload/v1719422571/chef_logo_wtmpko.png"
+            alt="Chef Freelance Logo"
+            sx={{ height: { xs: 40, md: 48 } }}
+          />
+        </Box>
+
+        {isMobile ? (
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
+            sx={{ color: "#FFFFFF" }}
+            aria-label="Open navigation menu"
+          >
+            <MenuIcon />
+          </IconButton>
+        ) : (
+          desktopNav
+        )}
+      </Toolbar>
+      {mobileDrawer}
+    </AppBar>
   );
 };
 

@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { TextField, Button, Typography } from "@mui/material";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import "./Auth.css";
+import FormContainer from "../Shared/FormContainer";
+import LocationSelect from "../Shared/LocationSelect";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 
 const UserSignUp = () => {
   const [user, setUser] = useState({
@@ -21,7 +13,7 @@ const UserSignUp = () => {
     password: "",
     location: "Nizamabad",
   });
-  // const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -33,14 +25,14 @@ const UserSignUp = () => {
       newErrors.mail = "Email address is invalid.";
     }
     if (!user.password) newErrors.password = "Password is required.";
-
-    // setErrors(newErrors);
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    console.log("click");
+
     const object = {
       name: user.name,
       email: user.mail,
@@ -51,26 +43,17 @@ const UserSignUp = () => {
     try {
       const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(object),
       };
-      console.log(options);
       const response = await fetch(
         "https://mini-project-backend-i3zm.onrender.com/user-signup",
         options
       );
-      console.log(response);
       const result = await response.json();
-      console.log(result);
       if (result.message) {
-        Cookies.set("userId", JSON.stringify(result.id), {
-          expires: 10,
-        });
-        Cookies.set("user", result.user, {
-          expires: 10,
-        });
+        Cookies.set("userId", JSON.stringify(result.id), { expires: 10 });
+        Cookies.set("user", result.user, { expires: 10 });
         navigate("/");
       } else {
         console.error("Sign Up failed:", result);
@@ -82,119 +65,102 @@ const UserSignUp = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
-  // console.log(errors);
+
   return (
-    <Box
-      className="auth-container"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
+    <FormContainer
+      title="Create Account"
+      subtitle="Join as a customer to book chefs"
+      onSubmit={handleSubmit}
     >
-      <Box
-        className="auth-container"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Name"
+        name="name"
+        value={user.name}
+        onChange={handleChange}
+        placeholder="Enter your name"
+        required
+        error={Boolean(errors.name)}
+        helperText={errors.name}
+      />
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Email"
+        type="email"
+        name="mail"
+        value={user.mail}
+        onChange={handleChange}
+        placeholder="you@example.com"
+        required
+        error={Boolean(errors.mail)}
+        helperText={errors.mail}
+      />
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Password"
+        type="password"
+        name="password"
+        value={user.password}
+        onChange={handleChange}
+        placeholder="Create a password"
+        required
+        error={Boolean(errors.password)}
+        helperText={errors.password}
+      />
+
+      <LocationSelect
+        value={user.location}
+        onChange={handleChange}
+      />
+
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        size="large"
+        startIcon={<PersonAddOutlinedIcon />}
+        sx={{ mt: 3, mb: 2 }}
       >
-        <Typography variant="h4" gutterBottom>
-          Sign Up
-        </Typography>
+        Sign Up
+      </Button>
 
-        <form
-          component="form"
-          onSubmit={handleSubmit}
-          width="100%"
-          maxWidth="400px"
+      <Typography
+        variant="body2"
+        sx={{ textAlign: "center", color: "text.secondary", mb: 1 }}
+      >
+        Want to register as a Chef?{" "}
+        <Typography
+          component={Link}
+          to="/register"
+          variant="body2"
+          sx={{ color: "primary.dark", fontWeight: 600 }}
         >
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Name"
-            variant="outlined"
-            name="name"
-            value={user.name}
-            onChange={handleChange}
-            placeholder="Enter your name"
-            required
-          />
-
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Email"
-            type="email"
-            variant="outlined"
-            name="mail"
-            value={user.mail}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            required
-          />
-
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Password"
-            type="password"
-            variant="outlined"
-            name="password"
-            value={user.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            required
-          />
-
-          <FormControl fullWidth margin="normal" variant="outlined">
-            <InputLabel>Location</InputLabel>
-            <Select
-              name="location"
-              value={user.location}
-              onChange={handleChange}
-              label="Location"
-              required
-            >
-              <MenuItem value="Nizamabad">Nizamabad</MenuItem>
-              <MenuItem value="Banjara Hills">Banjara Hills</MenuItem>
-              <MenuItem value="Jubilee Hills">Jubilee Hills</MenuItem>
-              <MenuItem value="Charminar">Charminar</MenuItem>
-              <MenuItem value="Secunderabad">Secunderabad</MenuItem>
-              <MenuItem value="Karimnagar">Karimnagar</MenuItem>
-              <MenuItem value="Warangal">Warangal</MenuItem>
-              <MenuItem value="Khammam">Khammam</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Button
-            // fullWidth
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: "orange",
-              color: "white",
-              marginTop: 2,
-              "&:hover": {
-                backgroundColor: "#ff8c00",
-              },
-            }}
-          >
-            Sign Up
-          </Button>
-        </form>
-
-        <Typography variant="body2" sx={{ marginTop: 2 }}>
-          <Link to="/register">Register as Chef?</Link>
+          Register here
         </Typography>
-        <Typography variant="body2" mt={1}>
-          <Link to="/login">Already have an account? Login!</Link>
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{ textAlign: "center", color: "text.secondary" }}
+      >
+        Already have an account?{" "}
+        <Typography
+          component={Link}
+          to="/login"
+          variant="body2"
+          sx={{ color: "primary.dark", fontWeight: 600 }}
+        >
+          Login
         </Typography>
-      </Box>{" "}
-      {/* {errors && <p>{errors.map((err) => err)}</p>} */}
-    </Box>
+      </Typography>
+    </FormContainer>
   );
 };
+
 export default UserSignUp;

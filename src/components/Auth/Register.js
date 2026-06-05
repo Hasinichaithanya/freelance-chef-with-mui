@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+} from "@mui/material";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import "./Auth.css";
+import FormContainer from "../Shared/FormContainer";
+import LocationSelect from "../Shared/LocationSelect";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
-const ProfileForm = () => {
+const Register = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "",
@@ -20,12 +30,10 @@ const ProfileForm = () => {
   const [image, setImage] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
+    setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
@@ -67,125 +75,177 @@ const ProfileForm = () => {
 
     const options = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(object),
     };
 
     try {
+      setIsSubmitted(true);
       const response = await fetch(
         "https://mini-project-backend-i3zm.onrender.com/register",
         options
       );
       const result = await response.json();
-      console.log(result);
       if (response.ok) {
         Cookies.set("userId", JSON.stringify(result.chefDetails.insertedId), {
           expires: 10,
         });
-        Cookies.set("user", "Chef", {
-          expires: 10,
-        });
+        Cookies.set("user", "Chef", { expires: 10 });
         navigate("/");
       } else {
+        setIsSubmitted(false);
         console.error("Registration failed:", result);
       }
     } catch (error) {
+      setIsSubmitted(false);
       console.error("Error:", error);
     }
   };
 
-  const handleSubmitClick = () => {
-    setIsSubmitted(true);
-  };
   return (
-    <form onSubmit={handleSubmit} className="register-form">
-      <h1>Register as a chef</h1>
-      <input
-        type="text"
+    <FormContainer
+      title="Register as a Chef"
+      subtitle="Create your chef profile and start cooking"
+      maxWidth={540}
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Full Name"
         name="name"
-        placeholder="Enter your name"
         value={profile.name}
         onChange={handleChange}
+        placeholder="Enter your name"
+        error={Boolean(errors.name)}
+        helperText={errors.name}
+        required
       />
-      {errors.name && <p className="error">*{errors.name}</p>}
-      <input
-        type="mail"
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Email"
+        type="email"
         name="mail"
-        placeholder="Enter your e-mail"
         value={profile.mail}
         onChange={handleChange}
+        placeholder="you@example.com"
+        error={Boolean(errors.mail)}
+        helperText={errors.mail}
+        required
       />
-      {errors.mail && <p className="error">*{errors.mail}</p>}
-      <input
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Password"
         type="password"
         name="password"
-        placeholder="Enter your password"
         value={profile.password}
         onChange={handleChange}
+        placeholder="Create a password"
+        error={Boolean(errors.password)}
+        helperText={errors.password}
+        required
       />
-      {errors.password && <p className="error">*{errors.password}</p>}
-      <input
-        type="number"
-        name="experience"
-        placeholder="Years of Experience"
-        value={profile.experience}
-        onChange={handleChange}
-      />
-      {errors.experience && <p className="error">*{errors.experience}</p>}
-      <input
-        type="number"
-        name="pricePerMeal"
-        placeholder="Price per meal"
-        value={profile.pricePerMeal}
-        onChange={handleChange}
-      />
-      {errors.pricePerMeal && <p className="error">*{errors.pricePerMeal}</p>}
-      <select name="location" value={profile.location} onChange={handleChange}>
-        <option>Nizamabad</option>
-        <option>Banjara Hills</option>
-        <option>Jubilee Hills</option>
-        <option>Charminar</option>
-        <option>Secunderabad</option>
-        <option>Karimnagar</option>
-        <option>Warangal</option>
-        <option>Khammam</option>
-      </select>
-      <input
-        type="text"
+
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Experience (years)"
+          type="number"
+          name="experience"
+          value={profile.experience}
+          onChange={handleChange}
+          error={Boolean(errors.experience)}
+          helperText={errors.experience}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Price per Meal (₹)"
+          type="number"
+          name="pricePerMeal"
+          value={profile.pricePerMeal}
+          onChange={handleChange}
+          error={Boolean(errors.pricePerMeal)}
+          helperText={errors.pricePerMeal}
+          required
+        />
+      </Box>
+
+      <LocationSelect value={profile.location} onChange={handleChange} />
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Food Items"
         name="fooditems"
-        placeholder="Enter food items separated by commas"
         value={profile.fooditems}
         onChange={handleChange}
+        placeholder="e.g. Biryani, Paneer Tikka, Pasta"
+        error={Boolean(errors.fooditems)}
+        helperText={errors.fooditems || "Separate items with commas"}
+        required
       />
-      {errors.fooditems && <p className="error">*{errors.fooditems}</p>}
-      <div>
-        <label>Upload your image</label>{" "}
+
+      <Box sx={{ mt: 2, mb: 1 }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            mb: 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
+          }}
+        >
+          <CloudUploadOutlinedIcon fontSize="small" />
+          Upload your photo
+        </Typography>
         <FileBase64
           type="file"
           multiple={false}
           onDone={({ base64 }) => setImage({ image: base64 })}
         />
-      </div>
-      {errors.image && <p className="error">*{errors.image}</p>}
-      <textarea
+        {errors.image && (
+          <Alert severity="error" sx={{ mt: 1, borderRadius: 2 }}>
+            {errors.image}
+          </Alert>
+        )}
+      </Box>
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Description"
         name="specialties"
-        placeholder="Describe yourself"
         value={profile.specialties}
         onChange={handleChange}
+        placeholder="Tell us about yourself and your cooking style"
+        multiline
+        rows={3}
+        error={Boolean(errors.specialties)}
+        helperText={errors.specialties}
+        required
       />
-      {errors.specialties && <p className="error">*{errors.specialties}</p>}
-      <button
-        className="submit"
+
+      <Button
+        fullWidth
         type="submit"
-        onClick={handleSubmitClick}
+        variant="contained"
+        size="large"
+        startIcon={<RestaurantOutlinedIcon />}
         disabled={isSubmitted}
+        sx={{ mt: 3 }}
       >
-        Register
-      </button>
-    </form>
+        {isSubmitted ? "Registering..." : "Register"}
+      </Button>
+    </FormContainer>
   );
 };
 
-export default ProfileForm;
+export default Register;

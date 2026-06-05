@@ -1,8 +1,27 @@
-/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Avatar,
+  Divider,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Chip,
+  Stack,
+  Alert,
+} from "@mui/material";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
-import "./Chef.css";
+import PasswordFields from "../Shared/PasswordFields";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
 const ProfileForm = () => {
   const [profile, setProfile] = useState({
@@ -20,28 +39,19 @@ const ProfileForm = () => {
   });
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+
   useEffect(() => {
     const id = Cookies.get("userId");
-    console.log(id);
 
     const fetchProfile = async () => {
-      if (!id) {
-        console.error("User ID is invalid or not found in cookies");
-        return;
-      }
+      if (!id) return;
       const url =
         "https://mini-project-backend-i3zm.onrender.com/get-chef?id=" +
         id.slice(1, -1);
-      console.log(url);
       try {
-        const response = await fetch(url, {
-          method: "GET",
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) throw new Error("Failed to fetch profile");
         const data = await response.json();
         setProfile(data.chefDetails || {});
       } catch (error) {
@@ -54,17 +64,11 @@ const ProfileForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
+    setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = ({ base64 }) => {
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      image: base64,
-    }));
+    setProfile((prev) => ({ ...prev, image: base64 }));
   };
 
   const handleSubmit = async (e) => {
@@ -74,17 +78,13 @@ const ProfileForm = () => {
         "https://mini-project-backend-i3zm.onrender.com/chef-profile",
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(profile),
         }
       );
-
       if (response.ok) {
-        console.log("Profile updated successfully");
-      } else {
-        console.error("Error updating profile");
+        setUpdateSuccess(true);
+        setTimeout(() => setUpdateSuccess(false), 3000);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -94,26 +94,19 @@ const ProfileForm = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     const id = Cookies.get("userId");
-    if (!id) {
-      console.error("User ID is invalid or not found in cookies");
-      return;
-    }
+    if (!id) return;
     try {
       const response = await fetch(
         "https://mini-project-backend-i3zm.onrender.com/change-password",
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user: "chef", id, oldPassword, newPassword }),
         }
       );
-
       if (response.ok) {
-        console.log("Password updated successfully");
-      } else {
-        console.error("Error updating password");
+        setOldPassword("");
+        setNewPassword("");
       }
     } catch (error) {
       console.error("Error updating password:", error);
@@ -121,147 +114,243 @@ const ProfileForm = () => {
   };
 
   return (
-    <div className="profile-form-container">
-      <form onSubmit={handleSubmit} className="profile-form">
-        <h2>Update Profile</h2>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      {/* Update Profile Section */}
+      <Paper
+        elevation={0}
+        sx={{ p: { xs: 3, sm: 4 }, border: "1px solid", borderColor: "divider" }}
+      >
+        <Typography variant="h5" sx={{ mb: 3, color: "text.primary" }}>
+          Update Profile
+        </Typography>
+
+        {updateSuccess && (
+          <Alert severity="success" sx={{ mb: 2, borderRadius: 2 }}>
+            Profile updated successfully!
+          </Alert>
+        )}
+
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          {/* Avatar */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 3,
+              mb: 3,
+            }}
+          >
+            <Avatar
+              src={profile.image}
+              alt={profile.name}
+              sx={{
+                width: 80,
+                height: 80,
+                border: "3px solid",
+                borderColor: "primary.light",
+              }}
+            />
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  mb: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                }}
+              >
+                <CloudUploadOutlinedIcon fontSize="small" />
+                Change photo
+              </Typography>
+              <FileBase64 multiple={false} onDone={handleImageUpload} />
+            </Box>
+          </Box>
+
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Name"
             name="name"
-            placeholder="Name"
             value={profile.name}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          {" "}
-          <label>E-Mail:</label>
-          <input
-            type="email"
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
             name="email"
-            placeholder="Email"
+            type="email"
             value={profile.email}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          {" "}
-          <label>Cost per meal:</label>
-          <input
-            type="number"
-            name="cost"
-            placeholder="Cost per Meal"
-            value={profile.cost}
-            onChange={handleChange}
-          />
-        </div>
-        <img src={profile.image} alt="chef" />
-        <FileBase64 multiple={false} onDone={handleImageUpload} />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={profile.Location}
-          onChange={handleChange}
-        />
-        <div>
-          {" "}
-          <label>Experience:</label>
-          <input
-            type="number"
-            name="Experience"
-            placeholder="Years of Experience"
-            value={profile.Experience}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Food Items:</label>
 
-          <input
-            type="text"
-            name="Experience"
-            placeholder="Your food items"
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Cost per Meal (₹)"
+              name="cost"
+              type="number"
+              value={profile.cost}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Experience (years)"
+              name="Experience"
+              type="number"
+              value={profile.Experience}
+              onChange={handleChange}
+            />
+          </Box>
+
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Location"
+            name="Location"
+            value={profile.Location}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Food Items"
+            name="Fooditems"
             value={profile.Fooditems}
             onChange={handleChange}
+            helperText="Separate items with commas"
           />
-        </div>
-        <div>
-          <label>Description: </label>
-
-          <textarea
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Description"
             name="Description"
-            placeholder="Description"
             value={profile.Description}
             onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Update Profile</button>
-      </form>
-
-      <div className="password-update-container">
-        <form onSubmit={handlePasswordChange}>
-          <h2>Change Password</h2>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your Old Password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            name="newPassword"
-            placeholder="Enter your new Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            multiline
+            rows={3}
           />
 
-          <button type="submit">Change Password</button>
-        </form>
-      </div>
+          <Button
+            type="submit"
+            variant="contained"
+            startIcon={<SaveOutlinedIcon />}
+            sx={{ mt: 2 }}
+          >
+            Save Changes
+          </Button>
+        </Box>
 
-      <div className="profile-details">
-        <h2>Profile Details</h2>
-        <p>
-          <strong>Likes:</strong> {!profile.likes === 0 ? profile.likes : "0"}
-        </p>
-        <h3>Comments:</h3>
-        {!profile.comments == [] ? (
-          <ul>
-            {profile.comments.length > 0 &&
-              profile.comments.map((comment, index) => (
-                <li key={index}>{comment}</li>
+        <PasswordFields
+          oldPassword={oldPassword}
+          newPassword={newPassword}
+          onOldPasswordChange={(e) => setOldPassword(e.target.value)}
+          onNewPasswordChange={(e) => setNewPassword(e.target.value)}
+          onSubmit={handlePasswordChange}
+        />
+      </Paper>
+
+      {/* Profile Details Section */}
+      <Paper
+        elevation={0}
+        sx={{ p: { xs: 3, sm: 4 }, border: "1px solid", borderColor: "divider" }}
+      >
+        <Typography variant="h5" sx={{ mb: 3, color: "text.primary" }}>
+          Profile Details
+        </Typography>
+
+        <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+          <Chip
+            icon={<FavoriteIcon />}
+            label={`${profile.likes || 0} Likes`}
+            variant="outlined"
+            color="error"
+          />
+        </Stack>
+
+        <Divider sx={{ mb: 2 }} />
+
+        {/* Comments */}
+        <Box sx={{ mb: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+            <CommentOutlinedIcon sx={{ color: "primary.main" }} />
+            <Typography variant="h6">Comments</Typography>
+          </Box>
+          {profile.comments && profile.comments.length > 0 ? (
+            <List dense>
+              {profile.comments.map((comment, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={comment}
+                    sx={{
+                      "& .MuiListItemText-primary": {
+                        backgroundColor: "background.default",
+                        p: 1.5,
+                        borderRadius: 2,
+                      },
+                    }}
+                  />
+                </ListItem>
               ))}
-          </ul>
-        ) : (
-          <li>No comments available</li>
-        )}{" "}
-        <h3>Orders: </h3>
-        {!profile.orders == [] ? (
-          <ul>
-            {profile.orders.length > 0 &&
-              profile.orders.map((order, index) => (
-                <li key={index}>
-                  Date: {order.date}
-                  <br />
-                  Time: {order.time}
-                  <br />
-                  Selected Items:
-                  <ul>
-                    {order.selectedItems.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </li>
+            </List>
+          ) : (
+            <Typography variant="body2" sx={{ color: "text.secondary", ml: 1 }}>
+              No comments yet
+            </Typography>
+          )}
+        </Box>
+
+        <Divider sx={{ mb: 2 }} />
+
+        {/* Orders */}
+        <Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+            <ShoppingBagOutlinedIcon sx={{ color: "primary.main" }} />
+            <Typography variant="h6">Orders</Typography>
+          </Box>
+          {profile.orders && profile.orders.length > 0 ? (
+            <List dense>
+              {profile.orders.map((order, index) => (
+                <ListItem
+                  key={index}
+                  sx={{
+                    backgroundColor: "background.default",
+                    borderRadius: 2,
+                    mb: 1,
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <ListItemText
+                    primary={`Date: ${order.date} — Time: ${order.time}`}
+                    secondary={
+                      <Stack direction="row" spacing={0.5} sx={{ mt: 1, flexWrap: "wrap", gap: 0.5 }}>
+                        {order.selectedItems.map((item, i) => (
+                          <Chip
+                            key={i}
+                            label={item}
+                            size="small"
+                            sx={{ backgroundColor: "primary.light", color: "secondary.dark" }}
+                          />
+                        ))}
+                      </Stack>
+                    }
+                  />
+                </ListItem>
               ))}
-          </ul>
-        ) : (
-          <li>No Orders available</li>
-        )}
-      </div>
-    </div>
+            </List>
+          ) : (
+            <Typography variant="body2" sx={{ color: "text.secondary", ml: 1 }}>
+              No orders yet
+            </Typography>
+          )}
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
