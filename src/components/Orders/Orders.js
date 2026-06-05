@@ -8,6 +8,7 @@ import {
   Chip,
   Stack,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import Cookies from "js-cookie";
 import PageHeader from "../Shared/PageHeader";
@@ -19,6 +20,7 @@ import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const id = Cookies.get("userId");
@@ -35,6 +37,8 @@ const Orders = () => {
         setOrders(data.userDetails.orders || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -49,7 +53,22 @@ const Orders = () => {
         icon={<ShoppingBagOutlinedIcon fontSize="large" />}
       />
 
-      {orders.length > 0 ? (
+      {isLoading ? (
+        <Stack spacing={2}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Card key={i}>
+              <CardContent sx={{ display: "flex", gap: 3, alignItems: "center" }}>
+                <Skeleton variant="circular" width={72} height={72} />
+                <Box sx={{ flex: 1 }}>
+                  <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
+                  <Skeleton variant="text" width="60%" sx={{ mb: 1 }} />
+                  <Skeleton variant="rectangular" height={28} width="80%" sx={{ borderRadius: 2 }} />
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+      ) : orders.length > 0 ? (
         <Stack spacing={2}>
           {orders.map((order, index) => (
             <Card key={index} sx={{ overflow: "visible" }}>

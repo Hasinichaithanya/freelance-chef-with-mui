@@ -62,6 +62,13 @@ const BenefitsList = ({ items }) => (
   </List>
 );
 
+const gradientTextSx = {
+  background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  mb: 1.5,
+};
+
 const Aboutus = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -93,16 +100,7 @@ const Aboutus = () => {
               }}
             />
             <Box sx={{ p: { xs: 3, md: 4 }, flex: 1 }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  background:
-                    "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  mb: 1.5,
-                }}
-              >
+              <Typography variant="h5" sx={gradientTextSx}>
                 Elevate Your Chef Career with Our Freelancing Platform
               </Typography>
               <Typography
@@ -148,16 +146,7 @@ const Aboutus = () => {
               }}
             />
             <Box sx={{ p: { xs: 3, md: 4 }, flex: 1 }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  background:
-                    "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  mb: 1.5,
-                }}
-              >
+              <Typography variant="h5" sx={gradientTextSx}>
                 Connecting You with Culinary Talent
               </Typography>
               <Typography

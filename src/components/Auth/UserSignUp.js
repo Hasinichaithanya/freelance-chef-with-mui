@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Alert } from "@mui/material";
 import Cookies from "js-cookie";
 import FormContainer from "../Shared/FormContainer";
 import LocationSelect from "../Shared/LocationSelect";
@@ -14,6 +14,7 @@ const UserSignUp = () => {
     location: "Nizamabad",
   });
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -56,10 +57,10 @@ const UserSignUp = () => {
         Cookies.set("user", result.user, { expires: 10 });
         navigate("/");
       } else {
-        console.error("Sign Up failed:", result);
+        setApiError(result.Message || "Sign up failed. This email may already be registered.");
       }
     } catch (error) {
-      console.error("Error:", error);
+      setApiError("Something went wrong. Please try again.");
     }
   };
 
@@ -74,6 +75,11 @@ const UserSignUp = () => {
       subtitle="Join as a customer to book chefs"
       onSubmit={handleSubmit}
     >
+      {apiError && (
+        <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+          {apiError}
+        </Alert>
+      )}
       <TextField
         fullWidth
         margin="normal"

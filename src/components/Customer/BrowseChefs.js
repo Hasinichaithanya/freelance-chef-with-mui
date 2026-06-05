@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+
 import {
   Box,
   TextField,
@@ -86,11 +86,7 @@ const BrowseChefs = () => {
   };
 
   const handleSearch = (event) => {
-    const input = event.target.value;
-    const regex = /^[a-zA-Z]*$/;
-    if (regex.test(input)) {
-      setSearchTerm(input);
-    }
+    setSearchTerm(event.target.value);
   };
 
   const handleSortOrderChange = (event) => {
@@ -159,7 +155,7 @@ const BrowseChefs = () => {
           <Select
             value={sortOrder}
             onChange={handleSortOrderChange}
-            label="Sort by Cost xxx"
+            label="Sort by Cost xxxx"
           >
             <MenuItem value="asc">Cost: Low to High</MenuItem>
             <MenuItem value="desc">Cost: High to Low</MenuItem>
@@ -173,7 +169,7 @@ const BrowseChefs = () => {
       ) : filteredChefs.length > 0 ? (
         <Grid container spacing={3}>
           {filteredChefs.map((chef) => (
-            <Grid key={uuidv4()} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Grid key={chef._id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <ChefProfile chef={chef} />
             </Grid>
           ))}
