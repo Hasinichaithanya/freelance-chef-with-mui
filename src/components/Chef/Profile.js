@@ -21,9 +21,11 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import ChefModal from "../ChefModal/ChefModal";
 
 const ChefProfile = ({ chef = {} }) => {
+  const { execute } = useApi();
   const [ChefModalIsOpen, setChefModalIsOpen] = useState(false);
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const [likes, setLikes] = useState(chef.likes || 0);
@@ -37,14 +39,10 @@ const ChefProfile = ({ chef = {} }) => {
     try {
       const newLiked = !isLiked;
       setIsLiked(newLiked);
-      const response = await fetch(
-        `https://mini-project-backend-i3zm.onrender.com/update-likes/${chef._id}`,
-        {
-          method: "POST",
-          body: JSON.stringify({ isLiked: newLiked }),
-        }
-      );
-      if (response.ok) {
+      const response = await execute(`/update-likes/${chef._id}`, "POST", {
+        isLiked: newLiked,
+      });
+      if (response) {
         setLikes((prev) => (newLiked ? prev + 1 : prev - 1));
       }
     } catch (error) {
@@ -160,11 +158,7 @@ const ChefProfile = ({ chef = {} }) => {
           >
             {likes}
           </Button>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={openChefModal}
-          >
+          <Button variant="contained" size="small" onClick={openChefModal}>
             Details
           </Button>
         </CardActions>
@@ -186,7 +180,8 @@ const ChefProfile = ({ chef = {} }) => {
         </DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            You need to be logged in to like a chef's profile. Would you like to sign in or register now?
+            You need to be logged in to like a chef's profile. Would you like to
+            sign in or register now?
           </Typography>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>

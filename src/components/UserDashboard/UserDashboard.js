@@ -8,11 +8,13 @@ import {
   Alert,
 } from "@mui/material";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import PasswordFields from "../Shared/PasswordFields";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 
 const UserDashboard = () => {
+  const { execute } = useApi();
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -27,13 +29,8 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       if (!id) return;
-      const url =
-        "https://mini-project-backend-i3zm.onrender.com/get-user?id=" +
-        id.slice(1, -1);
       try {
-        const response = await fetch(url, { method: "GET" });
-        if (!response.ok) throw new Error("Failed to fetch user");
-        const data = await response.json();
+        const data = await execute(`/get-user?id=${id.slice(1, -1)}`, "GET");
         setProfile(data.userDetails || {});
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -51,15 +48,8 @@ const UserDashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/chef-profile",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(profile),
-        }
-      );
-      if (response.ok) {
+      const response = await execute("/chef-profile", "PUT", profile);
+      if (response) {
         setUpdateSuccess(true);
         setTimeout(() => setUpdateSuccess(false), 3000);
       }
@@ -71,15 +61,13 @@ const UserDashboard = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/change-password",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user: "user", id, oldPassword, newPassword }),
-        }
-      );
-      if (response.ok) {
+      const response = await execute("/change-password", "PUT", {
+        user: "user",
+        id,
+        oldPassword,
+        newPassword,
+      });
+      if (response) {
         setOldPassword("");
         setNewPassword("");
       }
@@ -122,10 +110,7 @@ const UserDashboard = () => {
           <Typography variant="h4" sx={{ color: "text.primary" }}>
             Your Profile
           </Typography>
-          <Typography
-            variant="body2"
-            sx={{ color: "text.secondary", mt: 0.5 }}
-          >
+          <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
             Manage your account information
           </Typography>
         </Box>

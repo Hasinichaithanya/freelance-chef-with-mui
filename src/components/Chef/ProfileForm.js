@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import PasswordFields from "../Shared/PasswordFields";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
@@ -24,6 +25,7 @@ import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
 const ProfileForm = () => {
+  const { execute } = useApi();
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -46,13 +48,8 @@ const ProfileForm = () => {
 
     const fetchProfile = async () => {
       if (!id) return;
-      const url =
-        "https://mini-project-backend-i3zm.onrender.com/get-chef?id=" +
-        id.slice(1, -1);
       try {
-        const response = await fetch(url, { method: "GET" });
-        if (!response.ok) throw new Error("Failed to fetch profile");
-        const data = await response.json();
+        const data = await execute(`/get-chef?id=${id.slice(1, -1)}`, "GET");
         setProfile(data.chefDetails || {});
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -60,7 +57,7 @@ const ProfileForm = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [execute]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,15 +71,8 @@ const ProfileForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/chef-profile",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(profile),
-        }
-      );
-      if (response.ok) {
+      const response = await execute("/chef-profile", "PUT", profile);
+      if (response) {
         setUpdateSuccess(true);
         setTimeout(() => setUpdateSuccess(false), 3000);
       }
@@ -96,15 +86,13 @@ const ProfileForm = () => {
     const id = Cookies.get("userId");
     if (!id) return;
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/change-password",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user: "chef", id, oldPassword, newPassword }),
-        }
-      );
-      if (response.ok) {
+      const response = await execute("/change-password", "PUT", {
+        user: "chef",
+        id,
+        oldPassword,
+        newPassword,
+      });
+      if (response) {
         setOldPassword("");
         setNewPassword("");
       }
@@ -118,7 +106,11 @@ const ProfileForm = () => {
       {/* Update Profile Section */}
       <Paper
         elevation={0}
-        sx={{ p: { xs: 3, sm: 4 }, border: "1px solid", borderColor: "divider" }}
+        sx={{
+          p: { xs: 3, sm: 4 },
+          border: "1px solid",
+          borderColor: "divider",
+        }}
       >
         <Typography variant="h5" sx={{ mb: 3, color: "text.primary" }}>
           Update Profile
@@ -257,7 +249,11 @@ const ProfileForm = () => {
       {/* Profile Details Section */}
       <Paper
         elevation={0}
-        sx={{ p: { xs: 3, sm: 4 }, border: "1px solid", borderColor: "divider" }}
+        sx={{
+          p: { xs: 3, sm: 4 },
+          border: "1px solid",
+          borderColor: "divider",
+        }}
       >
         <Typography variant="h5" sx={{ mb: 3, color: "text.primary" }}>
           Profile Details
@@ -328,13 +324,20 @@ const ProfileForm = () => {
                   <ListItemText
                     primary={`Date: ${order.date} — Time: ${order.time}`}
                     secondary={
-                      <Stack direction="row" spacing={0.5} sx={{ mt: 1, flexWrap: "wrap", gap: 0.5 }}>
+                      <Stack
+                        direction="row"
+                        spacing={0.5}
+                        sx={{ mt: 1, flexWrap: "wrap", gap: 0.5 }}
+                      >
                         {order.selectedItems.map((item, i) => (
                           <Chip
                             key={i}
                             label={item}
                             size="small"
-                            sx={{ backgroundColor: "primary.light", color: "secondary.dark" }}
+                            sx={{
+                              backgroundColor: "primary.light",
+                              color: "secondary.dark",
+                            }}
                           />
                         ))}
                       </Stack>

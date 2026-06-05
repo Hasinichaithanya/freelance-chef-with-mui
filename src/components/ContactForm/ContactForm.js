@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import useApi from "../../hooks/useApi";
 
 const ContactForm = () => {
+  const { loading, execute } = useApi();
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userMessage, setUserMessage] = useState("");
@@ -45,18 +47,8 @@ const ContactForm = () => {
       message: userMessage.trim(),
     };
 
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(object),
-    };
-
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/contact-us",
-        options
-      );
-      const result = await response.json();
+      const result = await execute("/contact-us", "POST", object);
       if (result.message) {
         setOpen(true);
         setUserEmail("");
@@ -97,7 +89,10 @@ const ContactForm = () => {
         >
           <EmailOutlinedIcon sx={{ color: "white", fontSize: 28 }} />
         </Box>
-        <Typography variant="h5" sx={{ fontWeight: 700, color: "text.primary" }}>
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 700, color: "text.primary" }}
+        >
           Contact Us
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>

@@ -11,6 +11,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import PageHeader from "../Shared/PageHeader";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
@@ -19,26 +20,19 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 
 const Orders = () => {
+  const { loading, execute } = useApi();
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const id = Cookies.get("userId");
 
     const fetchProfile = async () => {
       if (!id) return;
-      const url =
-        "https://mini-project-backend-i3zm.onrender.com/get-user?id=" +
-        id.slice(1, -1);
       try {
-        const response = await fetch(url, { method: "GET" });
-        if (!response.ok) throw new Error("Failed to fetch user");
-        const data = await response.json();
+        const data = await execute(`/get-user?id=${id.slice(1, -1)}`, "GET");
         setOrders(data.userDetails.orders || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -53,16 +47,23 @@ const Orders = () => {
         icon={<ShoppingBagOutlinedIcon fontSize="large" />}
       />
 
-      {isLoading ? (
+      {loading ? (
         <Stack spacing={2}>
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
-              <CardContent sx={{ display: "flex", gap: 3, alignItems: "center" }}>
+              <CardContent
+                sx={{ display: "flex", gap: 3, alignItems: "center" }}
+              >
                 <Skeleton variant="circular" width={72} height={72} />
                 <Box sx={{ flex: 1 }}>
                   <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
                   <Skeleton variant="text" width="60%" sx={{ mb: 1 }} />
-                  <Skeleton variant="rectangular" height={28} width="80%" sx={{ borderRadius: 2 }} />
+                  <Skeleton
+                    variant="rectangular"
+                    height={28}
+                    width="80%"
+                    sx={{ borderRadius: 2 }}
+                  />
                 </Box>
               </CardContent>
             </Card>
@@ -117,9 +118,7 @@ const Orders = () => {
                 {/* Order Details */}
                 <Box sx={{ flex: 1 }}>
                   <Stack spacing={1}>
-                    <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                    >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <CurrencyRupeeIcon
                         fontSize="small"
                         sx={{ color: "primary.main" }}
@@ -128,18 +127,14 @@ const Orders = () => {
                         Rs. {order.cost}
                       </Typography>
                     </Box>
-                    <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                    >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <CalendarTodayOutlinedIcon
                         fontSize="small"
                         sx={{ color: "text.secondary" }}
                       />
                       <Typography variant="body2">{order.date}</Typography>
                     </Box>
-                    <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                    >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <AccessTimeOutlinedIcon
                         fontSize="small"
                         sx={{ color: "text.secondary" }}
@@ -151,11 +146,20 @@ const Orders = () => {
                   <Box sx={{ mt: 2 }}>
                     <Typography
                       variant="caption"
-                      sx={{ color: "text.secondary", mb: 0.5, display: "block" }}
+                      sx={{
+                        color: "text.secondary",
+                        mb: 0.5,
+                        display: "block",
+                      }}
                     >
                       Ordered Items
                     </Typography>
-                    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+                    <Stack
+                      direction="row"
+                      spacing={0.5}
+                      flexWrap="wrap"
+                      useFlexGap
+                    >
                       {order.selectedItems.map((item, i) => (
                         <Chip
                           key={i}

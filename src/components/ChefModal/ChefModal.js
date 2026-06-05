@@ -27,11 +27,13 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import BookingModal from "../Booking/Booking";
+import useApi from "../../hooks/useApi";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 
 const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
   const navigate = useNavigate();
+  const { execute } = useApi();
   const [isModalOpen, setBookingModalOpen] = useState(false);
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -61,15 +63,10 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
     const updatedComments = [...comments, newComment];
 
     try {
-      const response = await fetch(
-        `https://mini-project-backend-i3zm.onrender.com/update-comments/${chef._id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ comments: updatedComments }),
-        }
-      );
-      if (response.ok) {
+      const response = await execute(`/update-comments/${chef._id}`, "POST", {
+        comments: updatedComments,
+      });
+      if (response) {
         setComments(updatedComments);
         setNewComment("");
       }
@@ -274,11 +271,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
             Close
           </Button>
           <Tooltip
-            title={
-              user === "Chef"
-                ? "Chefs cannot book other chefs"
-                : ""
-            }
+            title={user === "Chef" ? "Chefs cannot book other chefs" : ""}
             arrow
           >
             <span>
@@ -311,7 +304,8 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
         </DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            You need to be logged in to perform this action. Would you like to sign in or register now?
+            You need to be logged in to perform this action. Would you like to
+            sign in or register now?
           </Typography>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>

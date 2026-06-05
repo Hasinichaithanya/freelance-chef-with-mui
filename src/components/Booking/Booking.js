@@ -22,8 +22,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import useApi from "../../hooks/useApi";
 
 const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
+  const { execute } = useApi();
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
@@ -46,20 +48,14 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   useEffect(() => {
     const fetchDates = async () => {
       try {
-        const response = await fetch(
-          `https://mini-project-backend-i3zm.onrender.com/bookings/${chefId}`,
-          { method: "GET" }
-        );
-        if (response.ok) {
-          const res = await response.json();
-          setBookedDates(res.bookings);
-        }
+        const res = await execute(`/bookings/${chefId}`, "GET");
+        setBookedDates(res.bookings);
       } catch (error) {
         console.error("Error fetching dates:", error);
       }
     };
     fetchDates();
-  }, [chefId]);
+  }, [chefId, execute]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -97,14 +93,13 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   const bookChef = async () => {
     const id = Cookies.get("userId");
     const userId = id.slice(1, -1);
-    await fetch(
-      "https://mini-project-backend-i3zm.onrender.com/send-mail",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chefId, userId, date, time, selectedItems }),
-      }
-    );
+    await execute("/send-mail", "POST", {
+      chefId,
+      userId,
+      date,
+      time,
+      selectedItems,
+    });
   };
 
   const handleDateChange = (e) => {
@@ -144,11 +139,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
         </DialogTitle>
 
         <DialogContent dividers>
-          <Box
-            component="form"
-            onSubmit={handleBooking}
-            id="booking-form"
-          >
+          <Box component="form" onSubmit={handleBooking} id="booking-form">
             {/* Date Conflict Alert */}
             {dateConflictAlert && (
               <Alert
@@ -169,7 +160,10 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
                   fontSize="small"
                   sx={{ color: "primary.main" }}
                 />
-                <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ color: "text.secondary" }}
+                >
                   Select Date
                 </Typography>
               </Box>
@@ -197,7 +191,10 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
                   fontSize="small"
                   sx={{ color: "primary.main" }}
                 />
-                <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ color: "text.secondary" }}
+                >
                   Select Time
                 </Typography>
               </Box>
@@ -226,7 +223,10 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
                   fontSize="small"
                   sx={{ color: "primary.main" }}
                 />
-                <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ color: "text.secondary" }}
+                >
                   Select Items
                 </Typography>
               </Box>
@@ -274,11 +274,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
           <Button onClick={handleClose} variant="outlined">
             Cancel
           </Button>
-          <Button
-            type="submit"
-            form="booking-form"
-            variant="contained"
-          >
+          <Button type="submit" form="booking-form" variant="contained">
             Confirm Booking
           </Button>
         </DialogActions>

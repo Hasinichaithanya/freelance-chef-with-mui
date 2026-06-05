@@ -18,17 +18,18 @@ import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import ChefProfile from "../Chef/Profile";
 import PageHeader from "../Shared/PageHeader";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 
 const BrowseChefs = () => {
+  const { data, loading, error, execute } = useApi();
   const [chefs, setChefs] = useState([]);
   const [filteredChefs, setFilteredChefs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [errMsg, setErrMsg] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchChefs();
@@ -40,10 +41,7 @@ const BrowseChefs = () => {
 
   const fetchChefs = async () => {
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/get-all"
-      );
-      const data = await response.json();
+      const data = await execute("/get-all", "GET");
       const loggedInUserId = Cookies.get("userId");
       const filteredChefsList = data.chefsList.filter((chef) => {
         if (loggedInUserId) {
@@ -53,11 +51,9 @@ const BrowseChefs = () => {
       });
       setChefs(filteredChefsList);
       setFilteredChefs(sortChefsByCost(filteredChefsList));
-      setIsLoading(false);
     } catch (error) {
       console.error(error);
       setErrMsg("Could not fetch the data, try once again!");
-      setIsLoading(false);
     }
   };
 
@@ -127,11 +123,7 @@ const BrowseChefs = () => {
       />
 
       {/* Search & Filter Bar */}
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        spacing={2}
-        sx={{ mb: 4 }}
-      >
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mb: 4 }}>
         <TextField
           fullWidth
           placeholder="Search by food items..."
@@ -164,7 +156,7 @@ const BrowseChefs = () => {
       </Stack>
 
       {/* Content */}
-      {isLoading ? (
+      {loading ? (
         renderSkeletons()
       ) : filteredChefs.length > 0 ? (
         <Grid container spacing={3}>

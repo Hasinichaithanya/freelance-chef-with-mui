@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Alert } from "@mui/material";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import FormContainer from "../Shared/FormContainer";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
 const Login = () => {
+  const { execute } = useApi();
   const [user, setUser] = useState({ mail: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -27,18 +29,9 @@ const Login = () => {
     if (!validateForm()) return;
 
     const object = { email: user.mail, password: user.password };
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(object),
-    };
 
     try {
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/login",
-        options
-      );
-      const result = await response.json();
+      const result = await execute("/login", "POST", object);
       if (result.message) {
         Cookies.set("userId", JSON.stringify(result.id), { expires: 10 });
         Cookies.set("user", result.user, { expires: 10 });

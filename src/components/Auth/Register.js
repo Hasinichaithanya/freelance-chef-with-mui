@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Alert,
-} from "@mui/material";
+import { TextField, Button, Typography, Box, Alert } from "@mui/material";
 import FileBase64 from "react-file-base64";
 import Cookies from "js-cookie";
+import useApi from "../../hooks/useApi";
 import FormContainer from "../Shared/FormContainer";
 import LocationSelect from "../Shared/LocationSelect";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
 const Register = () => {
+  const { execute } = useApi();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "",
@@ -73,20 +69,10 @@ const Register = () => {
       Password: profile.password,
     };
 
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(object),
-    };
-
     try {
       setIsSubmitted(true);
-      const response = await fetch(
-        "https://mini-project-backend-i3zm.onrender.com/register",
-        options
-      );
-      const result = await response.json();
-      if (response.ok) {
+      const result = await execute("/register", "POST", object);
+      if (result) {
         Cookies.set("userId", JSON.stringify(result.chefDetails.insertedId), {
           expires: 10,
         });
