@@ -3,9 +3,7 @@ import {
   Box,
   FormControl,
   InputLabel,
-  MenuItem,
-  Select,
-  TextField,
+  TextField
 } from "@mui/material";
 import AppButton from "../AppButton/AppButton";
 import "./LocationSelect.css";
