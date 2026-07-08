@@ -94,10 +94,12 @@ export const apiDelete = (endpoint) => {
   return apiCall(endpoint, { method: "DELETE" });
 };
 
-export default {
+const apiService = {
   apiGet,
   apiPost,
   apiPut,
   apiPatch,
   apiDelete,
 };
+
+export default apiService;
