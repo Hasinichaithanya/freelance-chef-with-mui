@@ -199,7 +199,7 @@ const Register = () => {
         />
       </Box>
 
-      <LocationSelect value={profile.location} onChange={handleChange} onLocationClick={handleLocationClick} />
+      <LocationSelect value={profile.location} onChange={handleChange} onLocationClick={handleLocationClick} errorMesage={locationError} />
 
       <TextField
         fullWidth

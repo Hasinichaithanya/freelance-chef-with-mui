@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   Card,
   CardContent,
@@ -10,10 +10,6 @@ import {
   Box,
   Divider,
   Avatar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -23,6 +19,7 @@ import Cookies from "js-cookie";
 import useApi from "../../../hooks/useApi";
 import ChefModal from "../../ChefModal/ChefModal";
 import AppButton from "../../Shared/AppButton/AppButton";
+import LoginPromptDialog from "../../Shared/LoginPromptDialog/LoginPromptDialog";
 import "./Profile.css";
 
 const ChefProfile = ({ chef = {} }) => {
@@ -31,7 +28,6 @@ const ChefProfile = ({ chef = {} }) => {
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const [likes, setLikes] = useState(chef.likes || 0);
   const [isLiked, setIsLiked] = useState(false);
-  const navigate = useNavigate();
 
   const openChefModal = () => setChefModalIsOpen(true);
   const closeChefModal = () => setChefModalIsOpen(false);
@@ -118,7 +114,7 @@ const ChefProfile = ({ chef = {} }) => {
           >
             {likes}
           </AppButton>
-          <AppButton  size="small" onClick={openChefModal}>
+          <AppButton size="small" onClick={openChefModal}>
             Details
           </AppButton>
         </CardActions>
@@ -130,44 +126,11 @@ const ChefProfile = ({ chef = {} }) => {
         closeChefModal={closeChefModal}
       />
 
-      <Dialog
+      <LoginPromptDialog
         open={loginPromptOpen}
         onClose={() => setLoginPromptOpen(false)}
-        aria-labelledby="login-prompt-title"
-      >
-        <DialogTitle id="login-prompt-title" className="chef-dialog-title">
-          Login Required
-        </DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" className="chef-dialog-content-text">
-            You need to be logged in to like a chef's profile. Would you like to
-            sign in or register now?
-          </Typography>
-        </DialogContent>
-        <DialogActions className="chef-dialog-actions">
-          <AppButton onClick={() => setLoginPromptOpen(false)} color="inherit">
-            Cancel
-          </AppButton>
-          <AppButton
-            variant="outlined"
-            onClick={() => {
-              setLoginPromptOpen(false);
-              navigate("/UserSignUp");
-            }}
-          >
-            Sign Up
-          </AppButton>
-          <AppButton
-            
-            onClick={() => {
-              setLoginPromptOpen(false);
-              navigate("/login");
-            }}
-          >
-            Login
-          </AppButton>
-        </DialogActions>
-      </Dialog>
+        message="You need to be logged in to like a chef's profile. Would you like to sign in or register now?"
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   Typography,
   Box,
@@ -12,11 +12,11 @@ import {
   ListItem,
   ListItemText,
   Dialog,
+  Tooltip,
+  IconButton,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Tooltip,
-  IconButton,
 } from "@mui/material";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -30,10 +30,10 @@ import useApi from "../../hooks/useApi";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 import AppButton from "../Shared/AppButton/AppButton";
+import LoginPromptDialog from "../Shared/LoginPromptDialog/LoginPromptDialog";
 import "./ChefModal.css";
 
 const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
-  const navigate = useNavigate();
   const { execute } = useApi();
   const [isModalOpen, setBookingModalOpen] = useState(false);
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
@@ -113,7 +113,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
                   Location
                 </Typography>
                 <Typography variant="body2" className="chef-modal-info-value">
-                  {chef.Location || "Not available"}
+                  {chef.location || "Not available"}
                 </Typography>
               </Box>
             </Box>
@@ -124,7 +124,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
                   Experience
                 </Typography>
                 <Typography variant="body2" className="chef-modal-info-value">
-                  {chef.Experience || 0} years
+                  {chef.experience || 0} years
                 </Typography>
               </Box>
             </Box>
@@ -147,7 +147,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
               About
             </Typography>
             <Typography variant="body2" className="chef-modal-about-text">
-              {chef.Description || "Description not available"}
+              {chef.description || "Description not available"}
             </Typography>
           </Box>
 
@@ -159,7 +159,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
               Specialties
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {chef.Fooditems.map((item) => (
+              {chef.foodItems.map((item) => (
                 <Chip
                   key={uuidv4()}
                   icon={<RestaurantMenuIcon />}
@@ -213,7 +213,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
               >
                 <span>
                   <AppButton
-                    
+
                     size="small"
                     onClick={handleCommentSubmit}
                     className="chef-modal-send-btn"
@@ -236,7 +236,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
           >
             <span>
               <AppButton
-                
+
                 onClick={openBookingModal}
                 disabled={user === "Chef"}
               >
@@ -251,47 +251,13 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
         isOpen={isModalOpen}
         closeModal={closeBookingModal}
         chefId={chef._id}
-        items={chef.Fooditems}
+        items={chef.foodItems}
       />
 
-      <Dialog
+      <LoginPromptDialog
         open={loginPromptOpen}
         onClose={() => setLoginPromptOpen(false)}
-        aria-labelledby="login-prompt-title"
-      >
-        <DialogTitle id="login-prompt-title" className="chef-modal-login-title">
-          Login Required
-        </DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" className="chef-modal-login-text">
-            You need to be logged in to perform this action. Would you like to
-            sign in or register now?
-          </Typography>
-        </DialogContent>
-        <DialogActions className="chef-modal-login-actions">
-          <AppButton onClick={() => setLoginPromptOpen(false)} color="inherit">
-            Cancel
-          </AppButton>
-          <AppButton
-            variant="outlined"
-            onClick={() => {
-              setLoginPromptOpen(false);
-              navigate("/UserSignUp");
-            }}
-          >
-            Sign Up
-          </AppButton>
-          <AppButton
-            
-            onClick={() => {
-              setLoginPromptOpen(false);
-              navigate("/login");
-            }}
-          >
-            Login
-          </AppButton>
-        </DialogActions>
-      </Dialog>
+      />
     </>
   );
 };

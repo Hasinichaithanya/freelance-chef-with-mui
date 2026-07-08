@@ -24,7 +24,7 @@ import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import "./BrowseChefs.css";
 
 const BrowseChefs = () => {
-  const { data, loading, error, execute } = useApi();
+  const { loading, error, execute } = useApi();
   const [chefs, setChefs] = useState([]);
   const [filteredChefs, setFilteredChefs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,7 +53,7 @@ const BrowseChefs = () => {
       setFilteredChefs(sortChefsByCost(filteredChefsList));
     } catch (error) {
       console.error(error);
-      setErrMsg("Could not fetch the data, try once again!");
+      // setErrMsg("Could not fetch the data, try once again!");
     }
   };
 
@@ -173,7 +173,7 @@ const BrowseChefs = () => {
       ) : (
         <Box className="browse-chefs-empty">
           <RestaurantOutlinedIcon className="browse-chefs-empty-icon" />
-          <Typography variant="h6">{errMsg || "No chefs available"}</Typography>
+          <Typography variant="h6">{error || errMsg || "No chefs available"}</Typography>
         </Box>
       )}
     </Box>

@@ -3,7 +3,8 @@ import {
   Box,
   FormControl,
   InputLabel,
-  TextField
+  TextField,
+  Typography
 } from "@mui/material";
 import AppButton from "../AppButton/AppButton";
 import "./LocationSelect.css";
@@ -28,6 +29,7 @@ const LocationSelect = ({
   required = true,
   fullWidth = true,
   margin = "normal",
+  errorMesage
 }) => {
   return (
     <FormControl fullWidth={fullWidth} margin={margin} variant="outlined">
@@ -57,6 +59,7 @@ const LocationSelect = ({
           <LocationOnIcon />
         </AppButton>
       </Box>
+      {errorMesage && <Typography color="error" variant="body2" sx={{ ml: 1 }}>{errorMesage}</Typography>}
     </FormControl>
   );
 };

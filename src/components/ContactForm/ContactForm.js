@@ -14,7 +14,7 @@ import useApi from "../../hooks/useApi";
 import "./ContactForm.css";
 
 const ContactForm = () => {
-  const { loading, execute } = useApi();
+  const { execute } = useApi();
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userMessage, setUserMessage] = useState("");

@@ -19,7 +19,7 @@ import {
  * @returns {object} - { data, loading, error, execute, setData, setError }
  */
 export const useApi = (initialEndpoint = null) => {
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -51,7 +51,7 @@ export const useApi = (initialEndpoint = null) => {
             throw new Error(`Unsupported method: ${method}`);
         }
 
-        setData(result);
+        // setData(result);
         return result;
       } catch (err) {
         const errorMessage = err.message || "An error occurred";
@@ -76,11 +76,11 @@ export const useApi = (initialEndpoint = null) => {
   }, [initialEndpoint, execute]);
 
   return {
-    data,
+    // data,
     loading,
     error,
     execute,
-    setData,
+    // setData,
     setError,
     initialFetch,
   };
