@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   TextField,
   Typography,
   Snackbar,
@@ -10,7 +9,9 @@ import {
 } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import AppButton from "../Shared/AppButton/AppButton";
 import useApi from "../../hooks/useApi";
+import "./ContactForm.css";
 
 const ContactForm = () => {
   const { loading, execute } = useApi();
@@ -68,34 +69,17 @@ const ContactForm = () => {
   return (
     <Paper
       elevation={0}
-      sx={{
-        maxWidth: 480,
-        mx: "auto",
-        my: 6,
-        p: { xs: 3, sm: 4 },
-        border: "1px solid",
-        borderColor: "divider",
-      }}
+      className="contact-form-paper"
+      sx={{ borderColor: "divider" }}
     >
-      <Box sx={{ textAlign: "center", mb: 3 }}>
-        <Box
-          sx={{
-            display: "inline-flex",
-            p: 1.5,
-            borderRadius: "50%",
-            backgroundColor: "primary.main",
-            mb: 2,
-          }}
-        >
-          <EmailOutlinedIcon sx={{ color: "white", fontSize: 28 }} />
+      <Box className="contact-form-header">
+        <Box className="contact-form-icon-circle">
+          <EmailOutlinedIcon className="contact-form-icon" />
         </Box>
-        <Typography
-          variant="h5"
-          sx={{ fontWeight: 700, color: "text.primary" }}
-        >
+        <Typography variant="h5" className="contact-form-title" sx={{ color: "text.primary" }}>
           Contact Us
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
+        <Typography variant="body2" className="contact-form-subtitle" sx={{ color: "text.secondary" }}>
           We'd love to hear from you
         </Typography>
       </Box>
@@ -134,14 +118,13 @@ const ContactForm = () => {
           helperText={errors.message}
           required
         />
-        <Button
+        <AppButton
           type="submit"
-          variant="contained"
           startIcon={<SendOutlinedIcon />}
-          sx={{ mt: 2 }}
+          className="contact-form-submit-btn"
         >
           Send Message
-        </Button>
+        </AppButton>
       </Box>
 
       <Snackbar
@@ -154,7 +137,7 @@ const ContactForm = () => {
           onClose={handleClose}
           severity="success"
           variant="filled"
-          sx={{ borderRadius: 2 }}
+          className="contact-form-success-alert"
         >
           Message sent successfully!
         </Alert>

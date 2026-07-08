@@ -1,5 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+/* ===========================
+   CSS Custom Properties
+   =========================== */
+:root {
+  --color-primary: #F59E0B;
+  --color-primary-dark: #D97706;
+  --color-primary-light: #FDE68A;
+  --color-primary-contrast: #FFFFFF;
+  --color-error: #EF4444;
+  --color-error-hover-bg: rgba(239, 68, 68, 0.04);
+  --color-text-secondary: #6B7280;
+  --color-bg-default: #FAFAF9;
+  --color-white: #FFFFFF;
+  --color-white-85: rgba(255, 255, 255, 0.85);
+  --color-white-15: rgba(255, 255, 255, 0.15);
+  --color-white-12: rgba(255, 255, 255, 0.12);
+  --color-white-10: rgba(255, 255, 255, 0.1);
+  --color-white-40: rgba(255, 255, 255, 0.4);
+  --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  --gradient-hero-overlay: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(245, 158, 11, 0.45) 100%);
+}
+
+/* ===========================
+   Global Reset
+   =========================== */
 *,
 *::before,
 *::after {
@@ -11,7 +36,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FAFAF9;
+  background-color: var(--color-bg-default);
 }
 
 a {
@@ -19,6 +44,9 @@ a {
   color: inherit;
 }
 
+/* ===========================
+   Animations
+   =========================== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -33,4 +61,75 @@ a {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* ===========================
+   Reusable Utility Classes
+   =========================== */
+
+/* Flex: align center with gap */
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Flex: space-between with align center */
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Icon + label row (gap 8px) */
+.icon-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Amber gradient text */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Rounded icon circle with primary background */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  margin-bottom: 16px;
+}
+
+/* Empty state: centered, muted */
+.empty-state {
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* Auth link text */
+.auth-link-text {
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* Inline field row (two fields side by side) */
+.field-row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Upload label row */
+.upload-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
 }

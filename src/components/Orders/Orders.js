@@ -12,12 +12,13 @@ import {
 } from "@mui/material";
 import Cookies from "js-cookie";
 import useApi from "../../hooks/useApi";
-import PageHeader from "../Shared/PageHeader";
+import PageHeader from "../Shared/PageHeader/PageHeader";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
+import "./Orders.css";
 
 const Orders = () => {
   const { loading, execute } = useApi();
@@ -40,7 +41,7 @@ const Orders = () => {
   }, []);
 
   return (
-    <Box sx={{ py: 2 }}>
+    <Box className="orders-page">
       <PageHeader
         title="Your Orders"
         subtitle="View your booking history"
@@ -51,18 +52,16 @@ const Orders = () => {
         <Stack spacing={2}>
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
-              <CardContent
-                sx={{ display: "flex", gap: 3, alignItems: "center" }}
-              >
+              <CardContent className="orders-skeleton-content">
                 <Skeleton variant="circular" width={72} height={72} />
-                <Box sx={{ flex: 1 }}>
+                <Box className="orders-skeleton-body">
                   <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
                   <Skeleton variant="text" width="60%" sx={{ mb: 1 }} />
                   <Skeleton
                     variant="rectangular"
                     height={28}
                     width="80%"
-                    sx={{ borderRadius: 2 }}
+                    className="orders-skeleton-bar"
                   />
                 </Box>
               </CardContent>
@@ -73,38 +72,15 @@ const Orders = () => {
         <Stack spacing={2}>
           {orders.map((order, index) => (
             <Card key={index} sx={{ overflow: "visible" }}>
-              <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  gap: 3,
-                  alignItems: { sm: "center" },
-                }}
-              >
+              <CardContent className="orders-card-content">
                 {/* Chef Info */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    minWidth: 100,
-                  }}
-                >
+                <Box className="orders-chef-info">
                   <Avatar
                     src={order.image}
                     alt={order.chefName}
-                    sx={{
-                      width: 72,
-                      height: 72,
-                      mb: 1,
-                      border: "2px solid",
-                      borderColor: "primary.light",
-                    }}
+                    className="orders-chef-avatar"
                   />
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: 600, textAlign: "center" }}
-                  >
+                  <Typography variant="body2" className="orders-chef-name">
                     {order.chefName}
                   </Typography>
                 </Box>
@@ -112,64 +88,39 @@ const Orders = () => {
                 <Divider
                   orientation="vertical"
                   flexItem
-                  sx={{ display: { xs: "none", sm: "block" } }}
+                  className="orders-vertical-divider"
                 />
 
                 {/* Order Details */}
-                <Box sx={{ flex: 1 }}>
+                <Box className="orders-detail-body">
                   <Stack spacing={1}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <CurrencyRupeeIcon
-                        fontSize="small"
-                        sx={{ color: "primary.main" }}
-                      />
-                      <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    <Box className="orders-detail-row">
+                      <CurrencyRupeeIcon fontSize="small" sx={{ color: "primary.main" }} />
+                      <Typography variant="body2" className="orders-cost">
                         Rs. {order.cost}
                       </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <CalendarTodayOutlinedIcon
-                        fontSize="small"
-                        sx={{ color: "text.secondary" }}
-                      />
+                    <Box className="orders-detail-row">
+                      <CalendarTodayOutlinedIcon fontSize="small" sx={{ color: "text.secondary" }} />
                       <Typography variant="body2">{order.date}</Typography>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <AccessTimeOutlinedIcon
-                        fontSize="small"
-                        sx={{ color: "text.secondary" }}
-                      />
+                    <Box className="orders-detail-row">
+                      <AccessTimeOutlinedIcon fontSize="small" sx={{ color: "text.secondary" }} />
                       <Typography variant="body2">{order.time}</Typography>
                     </Box>
                   </Stack>
 
                   <Box sx={{ mt: 2 }}>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "text.secondary",
-                        mb: 0.5,
-                        display: "block",
-                      }}
-                    >
+                    <Typography variant="caption" className="orders-items-label">
                       Ordered Items
                     </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={0.5}
-                      flexWrap="wrap"
-                      useFlexGap
-                    >
+                    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
                       {order.selectedItems.map((item, i) => (
                         <Chip
                           key={i}
                           label={item}
                           size="small"
-                          sx={{
-                            backgroundColor: "primary.light",
-                            color: "secondary.dark",
-                            fontWeight: 500,
-                          }}
+                          className="orders-item-chip"
                         />
                       ))}
                     </Stack>
@@ -180,14 +131,8 @@ const Orders = () => {
           ))}
         </Stack>
       ) : (
-        <Box
-          sx={{
-            textAlign: "center",
-            py: 10,
-            color: "text.secondary",
-          }}
-        >
-          <InboxOutlinedIcon sx={{ fontSize: 64, color: "divider", mb: 2 }} />
+        <Box className="orders-empty">
+          <InboxOutlinedIcon className="orders-empty-icon" />
           <Typography variant="h6">No orders yet</Typography>
           <Typography variant="body2" sx={{ mt: 1 }}>
             Your bookings will appear here once you book a chef

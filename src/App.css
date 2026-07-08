@@ -1,0 +1,14 @@
+/* App.css */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  animation: fadeIn 0.4s ease-out;
+}

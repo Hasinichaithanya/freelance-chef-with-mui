@@ -1,0 +1,15 @@
+/* LocationSelect.css */
+
+.location-select-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.location-select-btn {
+  /* margin-top: 8px; */
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: 55px;
+}

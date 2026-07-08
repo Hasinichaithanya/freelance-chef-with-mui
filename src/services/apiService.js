@@ -4,6 +4,8 @@
  * Uses environment variables for base URL configuration
  */
 
+import axios from "axios";
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 /**
@@ -27,16 +29,10 @@ const apiCall = async (endpoint, options = {}) => {
   };
 
   try {
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await axios(url, config);
+    // Axios automatically parses JSON; use response.data (not response.json())
+    return response.data;
   } catch (error) {
-    console.error(`API Call Error [${endpoint}]:`, error);
     throw error;
   }
 };
@@ -59,7 +55,7 @@ export const apiGet = (endpoint) => {
 export const apiPost = (endpoint, data) => {
   return apiCall(endpoint, {
     method: "POST",
-    body: JSON.stringify(data),
+    data: JSON.stringify(data),
   });
 };
 
@@ -72,7 +68,7 @@ export const apiPost = (endpoint, data) => {
 export const apiPut = (endpoint, data) => {
   return apiCall(endpoint, {
     method: "PUT",
-    body: JSON.stringify(data),
+    data: JSON.stringify(data),
   });
 };
 
@@ -85,7 +81,7 @@ export const apiPut = (endpoint, data) => {
 export const apiPatch = (endpoint, data) => {
   return apiCall(endpoint, {
     method: "PATCH",
-    body: JSON.stringify(data),
+    data: JSON.stringify(data),
   });
 };
 

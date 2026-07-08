@@ -1,20 +1,21 @@
 import React from "react";
 import { Container } from "@mui/material";
-import ProfileForm from "../components/Chef/ProfileForm";
-import PageHeader from "../components/Shared/PageHeader";
+import ChefProfileForm from "../../components/Chef/ProfileForm/ChefProfileForm";
+import PageHeader from "../../components/Shared/PageHeader/PageHeader";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import "./ChefDashboard.css";
 
-const Dashboard = () => {
+const ChefDashboard = () => {
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="md" className="dashboard-container">
       <PageHeader
         title="Chef Dashboard"
         subtitle="Manage your profile, view orders, and track engagement"
         icon={<DashboardOutlinedIcon fontSize="large" />}
       />
-      <ProfileForm />
+      <ChefProfileForm />
     </Container>
   );
 };
 
-export default Dashboard;
+export default ChefDashboard;

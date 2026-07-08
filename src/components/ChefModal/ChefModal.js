@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Button,
   Typography,
   Box,
   TextField,
@@ -26,10 +25,12 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import BookingModal from "../Booking/Booking";
+import BookingModal from "../../components/Booking/Booking";
 import useApi from "../../hooks/useApi";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
+import AppButton from "../Shared/AppButton/AppButton";
+import "./ChefModal.css";
 
 const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
   const navigate = useNavigate();
@@ -83,13 +84,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <DialogTitle className="chef-modal-title-row">
           Chef Details
           <IconButton onClick={closeChefModal} size="small">
             <CloseIcon />
@@ -98,61 +93,48 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
 
         <DialogContent dividers>
           {/* Chef Header */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 3,
-            }}
-          >
+          <Box className="chef-modal-chef-header">
             <Avatar
               src={chef.image || ""}
               alt={chef.name || "Chef"}
-              sx={{
-                width: 140,
-                height: 140,
-                border: "4px solid",
-                borderColor: "primary.light",
-                mb: 2,
-              }}
+              className="chef-modal-avatar"
             />
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+            <Typography variant="h5" className="chef-modal-chef-name">
               {chef.name || "Unknown Chef"}
             </Typography>
           </Box>
 
           {/* Info Grid */}
           <Stack spacing={2} sx={{ mb: 3 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Box className="chef-modal-info-row">
               <LocationOnOutlinedIcon sx={{ color: "primary.main" }} />
               <Box>
-                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                <Typography variant="caption" className="chef-modal-info-label">
                   Location
                 </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                <Typography variant="body2" className="chef-modal-info-value">
                   {chef.Location || "Not available"}
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Box className="chef-modal-info-row">
               <WorkOutlineIcon sx={{ color: "primary.main" }} />
               <Box>
-                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                <Typography variant="caption" className="chef-modal-info-label">
                   Experience
                 </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                <Typography variant="body2" className="chef-modal-info-value">
                   {chef.Experience || 0} years
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Box className="chef-modal-info-row">
               <EmailOutlinedIcon sx={{ color: "primary.main" }} />
               <Box>
-                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                <Typography variant="caption" className="chef-modal-info-label">
                   Email
                 </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                <Typography variant="body2" className="chef-modal-info-value">
                   {chef.email}
                 </Typography>
               </Box>
@@ -161,13 +143,10 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
 
           {/* Description */}
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle2"
-              sx={{ color: "text.secondary", mb: 0.5 }}
-            >
+            <Typography variant="subtitle2" className="chef-modal-about-label">
               About
             </Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.7 }}>
+            <Typography variant="body2" className="chef-modal-about-text">
               {chef.Description || "Description not available"}
             </Typography>
           </Box>
@@ -176,10 +155,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
 
           {/* Specialties */}
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle2"
-              sx={{ color: "text.secondary", mb: 1 }}
-            >
+            <Typography variant="subtitle2" className="chef-modal-section-label">
               Specialties
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
@@ -189,7 +165,7 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
                   icon={<RestaurantMenuIcon />}
                   label={item}
                   variant="outlined"
-                  sx={{ borderColor: "primary.light", mb: 0.5 }}
+                  className="chef-modal-specialty-chip"
                 />
               )) || "Not available"}
             </Stack>
@@ -199,29 +175,16 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
 
           {/* Comments */}
           <Box sx={{ mb: 2 }}>
-            <Box
-              sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}
-            >
-              <ChatBubbleOutlineIcon
-                fontSize="small"
-                sx={{ color: "primary.main" }}
-              />
-              <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+            <Box className="chef-modal-comments-header">
+              <ChatBubbleOutlineIcon fontSize="small" sx={{ color: "primary.main" }} />
+              <Typography variant="subtitle2" className="chef-modal-comments-label">
                 Comments ({comments.length})
               </Typography>
             </Box>
             {comments.length > 0 ? (
               <List dense disablePadding>
                 {comments.map((comment, index) => (
-                  <ListItem
-                    key={index}
-                    sx={{
-                      backgroundColor: "background.default",
-                      borderRadius: 2,
-                      mb: 0.5,
-                      px: 2,
-                    }}
-                  >
+                  <ListItem key={index} className="chef-modal-comment-item">
                     <ListItemText
                       primary={comment}
                       primaryTypographyProps={{ variant: "body2" }}
@@ -230,16 +193,13 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
                 ))}
               </List>
             ) : (
-              <Typography
-                variant="body2"
-                sx={{ color: "text.secondary", ml: 1 }}
-              >
+              <Typography variant="body2" className="chef-modal-no-comments">
                 No comments yet
               </Typography>
             )}
 
             {/* Add Comment */}
-            <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+            <Box className="chef-modal-add-comment">
               <TextField
                 fullWidth
                 size="small"
@@ -252,36 +212,36 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
                 arrow
               >
                 <span>
-                  <Button
-                    variant="contained"
+                  <AppButton
+                    
                     size="small"
                     onClick={handleCommentSubmit}
-                    sx={{ minWidth: "auto", px: 2 }}
+                    className="chef-modal-send-btn"
                   >
                     <SendIcon fontSize="small" />
-                  </Button>
+                  </AppButton>
                 </span>
               </Tooltip>
             </Box>
           </Box>
         </DialogContent>
 
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={closeChefModal} variant="outlined">
+        <DialogActions className="chef-modal-dialog-actions">
+          <AppButton onClick={closeChefModal} variant="outlined">
             Close
-          </Button>
+          </AppButton>
           <Tooltip
             title={user === "Chef" ? "Chefs cannot book other chefs" : ""}
             arrow
           >
             <span>
-              <Button
-                variant="contained"
+              <AppButton
+                
                 onClick={openBookingModal}
                 disabled={user === "Chef"}
               >
                 Book Chef
-              </Button>
+              </AppButton>
             </span>
           </Tooltip>
         </DialogActions>
@@ -299,20 +259,20 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
         onClose={() => setLoginPromptOpen(false)}
         aria-labelledby="login-prompt-title"
       >
-        <DialogTitle id="login-prompt-title" sx={{ fontWeight: 700 }}>
+        <DialogTitle id="login-prompt-title" className="chef-modal-login-title">
           Login Required
         </DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography variant="body2" className="chef-modal-login-text">
             You need to be logged in to perform this action. Would you like to
             sign in or register now?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button onClick={() => setLoginPromptOpen(false)} color="inherit">
+        <DialogActions className="chef-modal-login-actions">
+          <AppButton onClick={() => setLoginPromptOpen(false)} color="inherit">
             Cancel
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
             variant="outlined"
             onClick={() => {
               setLoginPromptOpen(false);
@@ -320,16 +280,16 @@ const ChefModal = ({ chef, ChefModalIsOpen, closeChefModal }) => {
             }}
           >
             Sign Up
-          </Button>
-          <Button
-            variant="contained"
+          </AppButton>
+          <AppButton
+            
             onClick={() => {
               setLoginPromptOpen(false);
               navigate("/login");
             }}
           >
             Login
-          </Button>
+          </AppButton>
         </DialogActions>
       </Dialog>
     </>

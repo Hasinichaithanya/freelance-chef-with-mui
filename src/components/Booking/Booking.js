@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import {
-  Button,
   Typography,
   Box,
   TextField,
@@ -23,6 +22,8 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import useApi from "../../hooks/useApi";
+import AppButton from "../Shared/AppButton/AppButton";
+import "./Booking.css";
 
 const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   const { execute } = useApi();
@@ -125,13 +126,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
   return (
     <>
       <Dialog open={isOpen} maxWidth="sm" fullWidth>
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <DialogTitle className="booking-dialog-title-row">
           Book Chef
           <IconButton onClick={handleClose} size="small">
             <CloseIcon />
@@ -145,25 +140,17 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
               <Alert
                 severity="warning"
                 onClose={() => setDateConflictAlert(false)}
-                sx={{ mb: 2, borderRadius: 2 }}
+                className="booking-conflict-alert"
               >
                 This date is already booked. Please select another date.
               </Alert>
             )}
 
             {/* Date */}
-            <Box sx={{ mb: 3 }}>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
-                <CalendarTodayOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: "primary.main" }}
-                />
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: "text.secondary" }}
-                >
+            <Box className="booking-section">
+              <Box className="booking-section-header">
+                <CalendarTodayOutlinedIcon fontSize="small" sx={{ color: "primary.main" }} />
+                <Typography variant="subtitle2" className="booking-section-label">
                   Select Date
                 </Typography>
               </Box>
@@ -183,18 +170,10 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
             </Box>
 
             {/* Time */}
-            <Box sx={{ mb: 3 }}>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
-                <AccessTimeOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: "primary.main" }}
-                />
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: "text.secondary" }}
-                >
+            <Box className="booking-section">
+              <Box className="booking-section-header">
+                <AccessTimeOutlinedIcon fontSize="small" sx={{ color: "primary.main" }} />
+                <Typography variant="subtitle2" className="booking-section-label">
                   Select Time
                 </Typography>
               </Box>
@@ -216,22 +195,14 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
 
             {/* Items */}
             <Box sx={{ mb: 2 }}>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}
-              >
-                <RestaurantMenuIcon
-                  fontSize="small"
-                  sx={{ color: "primary.main" }}
-                />
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: "text.secondary" }}
-                >
+              <Box className="booking-items-header">
+                <RestaurantMenuIcon fontSize="small" sx={{ color: "primary.main" }} />
+                <Typography variant="subtitle2" className="booking-section-label">
                   Select Items
                 </Typography>
               </Box>
               {errors.items && (
-                <Alert severity="error" sx={{ mb: 1.5, borderRadius: 2 }}>
+                <Alert severity="error" className="booking-alert">
                   {errors.items}
                 </Alert>
               )}
@@ -253,16 +224,11 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
                       />
                     }
                     label={
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      <Typography variant="body2" className="booking-checkbox-label">
                         {item}
                       </Typography>
                     }
-                    sx={{
-                      ml: 0,
-                      borderRadius: 2,
-                      px: 1,
-                      "&:hover": { backgroundColor: "action.hover" },
-                    }}
+                    className="booking-checkbox-item"
                   />
                 ))}
               </Stack>
@@ -270,13 +236,13 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
           </Box>
         </DialogContent>
 
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={handleClose} variant="outlined">
+        <DialogActions className="booking-dialog-actions">
+          <AppButton onClick={handleClose} variant="outlined">
             Cancel
-          </Button>
-          <Button type="submit" form="booking-form" variant="contained">
+          </AppButton>
+          <AppButton type="submit" form="booking-form" >
             Confirm Booking
-          </Button>
+          </AppButton>
         </DialogActions>
       </Dialog>
 
@@ -289,7 +255,7 @@ const BookingModal = ({ isOpen, closeModal, chefId, items }) => {
         <Alert
           severity="success"
           variant="filled"
-          sx={{ borderRadius: 2 }}
+          className="booking-success-alert"
           onClose={() => setSuccessSnackbar(false)}
         >
           Chef booked successfully! You'll receive a confirmation email shortly.

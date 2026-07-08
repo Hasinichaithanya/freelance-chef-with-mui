@@ -1,0 +1,102 @@
+/* Orders.css */
+
+.orders-page {
+  padding: 16px 0;
+}
+
+/* Skeleton card content */
+.orders-skeleton-content {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.orders-skeleton-body {
+  flex: 1;
+}
+
+.orders-skeleton-bar {
+  border-radius: 8px;
+}
+
+/* Order card */
+.orders-card-content {
+  display: flex;
+  gap: 24px;
+}
+
+/* Chef info column */
+.orders-chef-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+
+.orders-chef-avatar {
+  width: 72px !important;
+  height: 72px !important;
+  margin-bottom: 8px !important;
+  border: 2px solid var(--color-primary-light) !important;
+}
+
+.orders-chef-name {
+  font-weight: 600 !important;
+  text-align: center;
+}
+
+/* Vertical divider */
+.orders-vertical-divider {
+  display: none;
+}
+
+/* Order details */
+.orders-detail-body {
+  flex: 1;
+}
+
+.orders-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.orders-cost {
+  font-weight: 600 !important;
+}
+
+.orders-items-label {
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.orders-item-chip {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-primary-dark) !important;
+  font-weight: 500 !important;
+}
+
+/* Empty state */
+.orders-empty {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--color-text-secondary);
+}
+
+.orders-empty-icon {
+  font-size: 64px !important;
+  color: #e0e0e0 !important;
+  margin-bottom: 16px !important;
+}
+
+@media (min-width: 600px) {
+  .orders-card-content {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .orders-vertical-divider {
+    display: block;
+  }
+}

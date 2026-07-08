@@ -5,7 +5,6 @@ import {
   CardContent,
   CardActions,
   Typography,
-  Button,
   Chip,
   Stack,
   Box,
@@ -21,8 +20,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import Cookies from "js-cookie";
-import useApi from "../../hooks/useApi";
-import ChefModal from "../ChefModal/ChefModal";
+import useApi from "../../../hooks/useApi";
+import ChefModal from "../../ChefModal/ChefModal";
+import AppButton from "../../Shared/AppButton/AppButton";
+import "./Profile.css";
 
 const ChefProfile = ({ chef = {} }) => {
   const { execute } = useApi();
@@ -62,46 +63,18 @@ const ChefProfile = ({ chef = {} }) => {
 
   return (
     <>
-      <Card
-        sx={{
-          width: { xs: "100%", sm: 260 },
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
+      <Card className="chef-card">
         {/* Chef Image */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            pt: 3,
-            pb: 1,
-          }}
-        >
+        <Box className="chef-card__avatar-wrapper">
           <Avatar
             src={chef.image || ""}
             alt={chef.name || "Chef"}
-            sx={{
-              width: 120,
-              height: 120,
-              border: "3px solid",
-              borderColor: "primary.light",
-              transition: "transform 0.3s ease",
-              "&:hover": { transform: "scale(1.05)" },
-            }}
+            className="chef-card__avatar"
           />
         </Box>
 
-        <CardContent sx={{ textAlign: "center", pt: 1, flexGrow: 1 }}>
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 700,
-              color: "text.primary",
-              mb: 1.5,
-            }}
-          >
+        <CardContent className="chef-card__content" sx={{ pt: 1, flexGrow: 1 }}>
+          <Typography variant="h6" className="chef-card__name">
             {chef.name || "Unknown Chef"}
           </Typography>
 
@@ -109,7 +82,7 @@ const ChefProfile = ({ chef = {} }) => {
             direction="row"
             spacing={1}
             justifyContent="center"
-            sx={{ mb: 1.5 }}
+            className="chef-card__chips"
           >
             <Chip
               icon={<WorkOutlineIcon />}
@@ -122,19 +95,15 @@ const ChefProfile = ({ chef = {} }) => {
               icon={<CurrencyRupeeIcon />}
               label={`${chef.cost || "N/A"} / meal`}
               size="small"
-              sx={{
-                backgroundColor: "primary.main",
-                color: "primary.contrastText",
-                "& .MuiChip-icon": { color: "primary.contrastText" },
-              }}
+              className="chef-card__chip--price"
             />
           </Stack>
         </CardContent>
 
         <Divider />
 
-        <CardActions sx={{ justifyContent: "center", p: 1.5, gap: 1 }}>
-          <Button
+        <CardActions className="chef-card__actions">
+          <AppButton
             variant="outlined"
             size="small"
             onClick={handleUser}
@@ -145,22 +114,13 @@ const ChefProfile = ({ chef = {} }) => {
                 <FavoriteBorderIcon />
               )
             }
-            sx={{
-              borderColor: isLiked ? "error.main" : "divider",
-              color: isLiked ? "error.main" : "text.secondary",
-              "&:hover": {
-                borderColor: "error.main",
-                backgroundColor: "rgba(239,68,68,0.04)",
-                transform: "none",
-                boxShadow: "none",
-              },
-            }}
+            className={`chef-card__like-btn${isLiked ? " chef-card__like-btn--active" : ""}`}
           >
             {likes}
-          </Button>
-          <Button variant="contained" size="small" onClick={openChefModal}>
+          </AppButton>
+          <AppButton  size="small" onClick={openChefModal}>
             Details
-          </Button>
+          </AppButton>
         </CardActions>
       </Card>
 
@@ -175,20 +135,20 @@ const ChefProfile = ({ chef = {} }) => {
         onClose={() => setLoginPromptOpen(false)}
         aria-labelledby="login-prompt-title"
       >
-        <DialogTitle id="login-prompt-title" sx={{ fontWeight: 700 }}>
+        <DialogTitle id="login-prompt-title" className="chef-dialog-title">
           Login Required
         </DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography variant="body2" className="chef-dialog-content-text">
             You need to be logged in to like a chef's profile. Would you like to
             sign in or register now?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button onClick={() => setLoginPromptOpen(false)} color="inherit">
+        <DialogActions className="chef-dialog-actions">
+          <AppButton onClick={() => setLoginPromptOpen(false)} color="inherit">
             Cancel
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
             variant="outlined"
             onClick={() => {
               setLoginPromptOpen(false);
@@ -196,16 +156,16 @@ const ChefProfile = ({ chef = {} }) => {
             }}
           >
             Sign Up
-          </Button>
-          <Button
-            variant="contained"
+          </AppButton>
+          <AppButton
+            
             onClick={() => {
               setLoginPromptOpen(false);
               navigate("/login");
             }}
           >
             Login
-          </Button>
+          </AppButton>
         </DialogActions>
       </Dialog>
     </>

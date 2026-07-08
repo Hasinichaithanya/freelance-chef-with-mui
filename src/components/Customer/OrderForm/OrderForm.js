@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
-import FormContainer from "../Shared/FormContainer";
+import { TextField, Box } from "@mui/material";
+import AppButton from "../../Shared/AppButton/AppButton";
+import FormContainer from "../../Shared/FormContainer/FormContainer";
 
 const OrderForm = ({ chef }) => {
   const [order, setOrder] = useState({
@@ -43,14 +44,14 @@ const OrderForm = ({ chef }) => {
         inputProps={{ min: 1 }}
         required
       />
-      <Button
+      <AppButton
         fullWidth
         type="submit"
-        variant="contained"
-        sx={{ mt: 2 }}
+        size="lg"
+        className="order-form-submit-btn"
       >
         Place Order
-      </Button>
+      </AppButton>
     </FormContainer>
   );
 };

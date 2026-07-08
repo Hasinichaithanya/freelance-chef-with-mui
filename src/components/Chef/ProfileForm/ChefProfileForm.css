@@ -1,0 +1,87 @@
+/* ProfileForm.css */
+
+.profile-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profile-form-paper {
+  padding: 24px;
+  border: 1px solid;
+}
+
+.profile-form-success-alert {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+/* Avatar row */
+.profile-form-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.profile-form-avatar {
+  width: 80px !important;
+  height: 80px !important;
+  border: 3px solid var(--color-primary-light) !important;
+  flex-shrink: 0;
+}
+
+.profile-form-save-btn {
+  margin-top: 16px !important;
+}
+
+/* Stats / badges row */
+.profile-form-stats {
+  margin-bottom: 24px !important;
+}
+
+/* Comments section */
+.profile-form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Comment list item */
+.profile-form-comment-item .MuiListItemText-primary {
+  background-color: #FAFAF9;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* Order list item */
+.profile-form-order-item {
+  background-color: #FAFAF9 !important;
+  border-radius: 8px !important;
+  margin-bottom: 8px !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.profile-form-order-chips {
+  margin-top: 8px !important;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.profile-form-order-chip {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-primary-dark) !important;
+}
+
+.profile-form-no-content {
+  color: var(--color-text-secondary);
+  margin-left: 8px;
+}
+
+@media (min-width: 600px) {
+  .profile-form-paper {
+    padding: 32px;
+  }
+}

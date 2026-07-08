@@ -1,0 +1,134 @@
+/* Header.css */
+
+.header-appbar {
+  background: var(--gradient-primary) !important;
+}
+
+.header-toolbar {
+  justify-content: space-between;
+  padding-left: 16px;
+  padding-right: 16px;
+  min-height: 64px;
+}
+
+.header-logo-link {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.header-logo-link:hover {
+  opacity: 0.85;
+}
+
+.header-logo-image {
+  height: 40px;
+}
+
+/* Desktop nav */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-nav-btn {
+  color: var(--color-white-85) !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+}
+
+.header-nav-btn:hover {
+  background-color: var(--color-white-12) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.header-nav-btn--active {
+  color: var(--color-white) !important;
+  font-weight: 700 !important;
+  background-color: var(--color-white-15) !important;
+}
+
+.header-logout-btn {
+  margin-left: 8px !important;
+  color: var(--color-white) !important;
+  border-color: var(--color-white-40) !important;
+}
+
+.header-logout-btn:hover {
+  border-color: var(--color-white) !important;
+  background-color: var(--color-white-10) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.header-menu-icon-btn {
+  color: var(--color-white) !important;
+}
+
+/* Mobile drawer */
+.header-drawer-close-row {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-drawer-list {
+  padding: 16px 8px;
+}
+
+.header-drawer-item {
+  margin-bottom: 4px;
+}
+
+.header-drawer-item-btn {
+  border-radius: 8px !important;
+}
+
+.header-drawer-item-btn:hover {
+  background-color: rgba(245, 158, 11, 0.06) !important;
+}
+
+.header-drawer-item-btn.Mui-selected {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: var(--color-primary-dark) !important;
+}
+
+.header-drawer-item-btn.Mui-selected .MuiListItemIcon-root {
+  color: var(--color-primary) !important;
+}
+
+.header-drawer-icon {
+  min-width: 40px;
+  color: var(--color-text-secondary);
+}
+
+.header-drawer-logout-btn {
+  border-radius: 8px !important;
+  color: #EF4444 !important;
+}
+
+.header-drawer-logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.06) !important;
+}
+
+.header-drawer-logout-icon {
+  min-width: 40px;
+  color: #EF4444 !important;
+}
+
+@media (min-width: 900px) {
+  .header-toolbar {
+    padding-left: 32px;
+    padding-right: 32px;
+    min-height: 72px;
+  }
+
+  .header-logo-image {
+    height: 48px;
+  }
+}

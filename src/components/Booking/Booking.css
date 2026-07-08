@@ -1,0 +1,63 @@
+/* Booking.css */
+
+.booking-dialog-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Date / Time / Items section */
+.booking-section {
+  margin-bottom: 24px;
+}
+
+.booking-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.booking-section-label {
+  color: var(--color-text-secondary) !important;
+}
+
+.booking-items-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.booking-alert {
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+/* Checkbox item */
+.booking-checkbox-item {
+  margin-left: 0 !important;
+  border-radius: 8px !important;
+  padding: 4px 8px !important;
+}
+
+.booking-checkbox-item:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.booking-checkbox-label {
+  font-weight: 500 !important;
+}
+
+.booking-success-alert {
+  border-radius: 8px !important;
+}
+
+.booking-dialog-actions {
+  padding: 16px 24px !important;
+}
+
+.booking-conflict-alert {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}

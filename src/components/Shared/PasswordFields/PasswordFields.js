@@ -1,6 +1,8 @@
 import React from "react";
-import { Box, TextField, Button, Typography, Divider } from "@mui/material";
+import { Box, TextField, Typography, Divider } from "@mui/material";
+import AppButton from "../AppButton/AppButton";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import "./PasswordFields.css";
 
 const PasswordFields = ({
   oldPassword,
@@ -10,9 +12,9 @@ const PasswordFields = ({
   onSubmit,
 }) => {
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box className="password-fields-section">
       <Divider sx={{ mb: 4 }} />
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+      <Box className="password-fields-header">
         <LockOutlinedIcon sx={{ color: "primary.main" }} />
         <Typography variant="h6" sx={{ color: "text.primary" }}>
           Change Password
@@ -41,14 +43,13 @@ const PasswordFields = ({
           onChange={onNewPasswordChange}
           required
         />
-        <Button
+        <AppButton
           type="submit"
           variant="outlined"
-          color="primary"
-          sx={{ mt: 2 }}
+          className="password-fields-submit-btn"
         >
           Update Password
-        </Button>
+        </AppButton>
       </Box>
     </Box>
   );

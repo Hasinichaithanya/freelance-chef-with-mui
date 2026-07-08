@@ -5,7 +5,6 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Button,
   IconButton,
   Drawer,
   List,
@@ -16,8 +15,8 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
-  alpha,
 } from "@mui/material";
+import AppButton from "../../Shared/AppButton/AppButton";
 import MenuIcon from "@mui/icons-material/MenuOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/HomeOutlined";
@@ -28,6 +27,7 @@ import DashboardIcon from "@mui/icons-material/DashboardOutlined";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBagOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
+import "./Header.css";
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -52,82 +52,43 @@ const Header = () => {
   ];
 
   if (!isLoggedIn) {
-    navItems.push({
-      label: "Sign Up",
-      path: "/UserSignUp",
-      icon: <PersonAddIcon />,
-    });
+    navItems.push({ label: "Sign Up", path: "/UserSignUp", icon: <PersonAddIcon /> });
   }
 
-  if (user === "Chef") {
-    navItems.push({
-      label: "Dashboard",
-      path: "/dashboard",
-      icon: <DashboardIcon />,
-    });
+  if (user?.toLowerCase() === "chef") {
+    navItems.push({ label: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> });
   }
 
-  if (user === "user") {
-    navItems.push({
-      label: "Orders",
-      path: "/orders",
-      icon: <ShoppingBagIcon />,
-    });
-    navItems.push({
-      label: "Profile",
-      path: "/user-profile",
-      icon: <AccountCircleIcon />,
-    });
+  if (user?.toLowerCase() === "user") {
+    navItems.push({ label: "Orders", path: "/orders", icon: <ShoppingBagIcon /> });
+    navItems.push({ label: "Profile", path: "/user-profile", icon: <AccountCircleIcon /> });
   }
 
   const isActive = (path) => location.pathname === path;
 
   const desktopNav = (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+    <Box className="header-nav">
       {navItems.map((item) => (
-        <Button
+        <AppButton
           key={item.path}
+          variant="ghost"
           component={Link}
           to={item.path}
-          sx={{
-            color: isActive(item.path) ? "primary.contrastText" : alpha("#FFFFFF", 0.85),
-            fontWeight: isActive(item.path) ? 700 : 500,
-            fontSize: "0.9rem",
-            px: 2,
-            py: 1,
-            borderRadius: 2,
-            backgroundColor: isActive(item.path)
-              ? alpha("#FFFFFF", 0.15)
-              : "transparent",
-            "&:hover": {
-              backgroundColor: alpha("#FFFFFF", 0.12),
-              transform: "none",
-              boxShadow: "none",
-            },
-          }}
+          active={isActive(item.path)}
+          className="header-nav-btn"
         >
           {item.label}
-        </Button>
+        </AppButton>
       ))}
       {user !== undefined && (
-        <Button
-          onClick={handleLogOut}
+        <AppButton
           variant="outlined"
+          onClick={handleLogOut}
           startIcon={<LogoutIcon />}
-          sx={{
-            ml: 1,
-            color: "#FFFFFF",
-            borderColor: alpha("#FFFFFF", 0.4),
-            "&:hover": {
-              borderColor: "#FFFFFF",
-              backgroundColor: alpha("#FFFFFF", 0.1),
-              transform: "none",
-              boxShadow: "none",
-            },
-          }}
+          className="header-logout-btn"
         >
           Logout
-        </Button>
+        </AppButton>
       )}
     </Box>
   );
@@ -145,35 +106,23 @@ const Header = () => {
         },
       }}
     >
-      <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+      <Box className="header-drawer-close-row">
         <IconButton onClick={() => setDrawerOpen(false)}>
           <CloseIcon />
         </IconButton>
       </Box>
       <Divider />
-      <List sx={{ px: 1, py: 2 }}>
+      <List className="header-drawer-list">
         {navItems.map((item) => (
-          <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+          <ListItem key={item.path} disablePadding className="header-drawer-item">
             <ListItemButton
               component={Link}
               to={item.path}
               onClick={() => setDrawerOpen(false)}
               selected={isActive(item.path)}
-              sx={{
-                borderRadius: 2,
-                "&.Mui-selected": {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                  color: "primary.dark",
-                  "& .MuiListItemIcon-root": {
-                    color: "primary.main",
-                  },
-                },
-                "&:hover": {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.06),
-                },
-              }}
+              className="header-drawer-item-btn"
             >
-              <ListItemIcon sx={{ minWidth: 40, color: "text.secondary" }}>
+              <ListItemIcon className="header-drawer-icon">
                 {item.icon}
               </ListItemIcon>
               <ListItemText
@@ -189,15 +138,9 @@ const Header = () => {
             <ListItem disablePadding>
               <ListItemButton
                 onClick={handleLogOut}
-                sx={{
-                  borderRadius: 2,
-                  color: "error.main",
-                  "&:hover": {
-                    backgroundColor: alpha(theme.palette.error.main, 0.06),
-                  },
-                }}
+                className="header-drawer-logout-btn"
               >
-                <ListItemIcon sx={{ minWidth: 40, color: "error.main" }}>
+                <ListItemIcon className="header-drawer-logout-icon">
                   <LogoutIcon />
                 </ListItemIcon>
                 <ListItemText
@@ -213,41 +156,21 @@ const Header = () => {
   );
 
   return (
-    <AppBar
-      position="sticky"
-      sx={{
-        background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
-      }}
-    >
-      <Toolbar
-        sx={{
-          justifyContent: "space-between",
-          px: { xs: 2, md: 4 },
-          minHeight: { xs: 64, md: 72 },
-        }}
-      >
-        <Box
-          component={Link}
-          to="/"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            transition: "opacity 0.2s",
-            "&:hover": { opacity: 0.85 },
-          }}
-        >
+    <AppBar position="sticky" className="header-appbar">
+      <Toolbar className="header-toolbar">
+        <Box component={Link} to="/" className="header-logo-link">
           <Box
             component="img"
             src="https://res.cloudinary.com/dlnpuom7o/image/upload/v1719422571/chef_logo_wtmpko.png"
             alt="Chef Freelance Logo"
-            sx={{ height: { xs: 40, md: 48 } }}
+            className="header-logo-image"
           />
         </Box>
 
         {isMobile ? (
           <IconButton
             onClick={() => setDrawerOpen(true)}
-            sx={{ color: "#FFFFFF" }}
+            className="header-menu-icon-btn"
             aria-label="Open navigation menu"
           >
             <MenuIcon />

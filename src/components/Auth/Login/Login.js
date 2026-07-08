@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Alert } from "@mui/material";
+import { TextField, Typography, Alert } from "@mui/material";
 import Cookies from "js-cookie";
-import useApi from "../../hooks/useApi";
-import FormContainer from "../Shared/FormContainer";
+import useApi from "../../../hooks/useApi";
+import FormContainer from "../../Shared/FormContainer/FormContainer";
+import AppButton from "../../Shared/AppButton/AppButton";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import "./Login.css";
 
 const Login = () => {
   const { execute } = useApi();
@@ -33,12 +35,12 @@ const Login = () => {
     try {
       const result = await execute("/login", "POST", object);
       if (result.message) {
-        Cookies.set("userId", JSON.stringify(result.id), { expires: 10 });
+        Cookies.set("userId", (result.userId), { expires: 10 });
         Cookies.set("user", result.user, { expires: 10 });
         navigate("/");
         setErrors({});
       } else {
-        setErrors({ loginError: result.Message });
+        setErrors({ loginError: result.message });
       }
     } catch (error) {
       setErrors({ loginError: "Something went wrong. Please try again." });
@@ -57,7 +59,7 @@ const Login = () => {
       onSubmit={handleSubmit}
     >
       {errors.loginError && (
-        <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+        <Alert severity="error" className="login-alert">
           {errors.loginError}
         </Alert>
       )}
@@ -90,27 +92,23 @@ const Login = () => {
         helperText={errors.password}
       />
 
-      <Button
+      <AppButton
         fullWidth
         type="submit"
-        variant="contained"
-        size="large"
+        size="lg"
         startIcon={<LoginOutlinedIcon />}
-        sx={{ mt: 3, mb: 2 }}
+        className="login-submit-btn"
       >
         Login
-      </Button>
+      </AppButton>
 
-      <Typography
-        variant="body2"
-        sx={{ textAlign: "center", color: "text.secondary" }}
-      >
+      <Typography variant="body2" className="login-footer-text auth-link-text">
         Don't have an account?{" "}
         <Typography
           component={Link}
           to="/register"
           variant="body2"
-          sx={{ color: "primary.dark", fontWeight: 600 }}
+          className="login-footer-link"
         >
           Sign Up
         </Typography>

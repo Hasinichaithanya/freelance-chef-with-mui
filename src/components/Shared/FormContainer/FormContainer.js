@@ -1,5 +1,6 @@
 import React from "react";
 import { Paper, Typography, Box } from "@mui/material";
+import "./FormContainer.css";
 
 const FormContainer = ({
   title,
@@ -10,28 +11,15 @@ const FormContainer = ({
   ...props
 }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        minHeight: "60vh",
-        py: 6,
-        px: 2,
-      }}
-    >
+    <Box className="form-container-wrapper">
       <Paper
         elevation={0}
-        sx={{
-          width: "100%",
-          maxWidth,
-          p: { xs: 3, sm: 5 },
-          border: "1px solid",
-          borderColor: "divider",
-        }}
+        className="form-container-paper"
+        style={{ maxWidth }}
+        sx={{ borderColor: "divider" }}
       >
         {title && (
-          <Box sx={{ mb: 4, textAlign: "center" }}>
+          <Box className="form-container-header">
             <Typography
               variant="h4"
               sx={{ color: "text.primary", mb: subtitle ? 1 : 0 }}

@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-
 import {
   Box,
   TextField,
@@ -18,10 +17,11 @@ import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
 import Cookies from "js-cookie";
-import useApi from "../../hooks/useApi";
-import ChefProfile from "../Chef/Profile";
-import PageHeader from "../Shared/PageHeader";
+import useApi from "../../../hooks/useApi";
+import ChefProfile from "../../Chef/Profile/Profile";
+import PageHeader from "../../Shared/PageHeader/PageHeader";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import "./BrowseChefs.css";
 
 const BrowseChefs = () => {
   const { data, loading, error, execute } = useApi();
@@ -93,12 +93,12 @@ const BrowseChefs = () => {
     <Grid container spacing={3}>
       {Array.from({ length: 8 }).map((_, index) => (
         <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <Card sx={{ p: 3, textAlign: "center" }}>
+          <Card className="browse-chefs-skeleton-card">
             <Skeleton
               variant="circular"
               width={120}
               height={120}
-              sx={{ mx: "auto", mb: 2 }}
+              className="browse-chefs-skeleton-circular"
             />
             <Skeleton variant="text" width="60%" sx={{ mx: "auto", mb: 1 }} />
             <Skeleton variant="text" width="80%" sx={{ mx: "auto", mb: 1 }} />
@@ -106,7 +106,7 @@ const BrowseChefs = () => {
               variant="rectangular"
               height={36}
               width="50%"
-              sx={{ mx: "auto", borderRadius: 2 }}
+              className="browse-chefs-skeleton-rect"
             />
           </Card>
         </Grid>
@@ -115,7 +115,7 @@ const BrowseChefs = () => {
   );
 
   return (
-    <Box sx={{ py: 2 }}>
+    <Box className="browse-chefs-page">
       <PageHeader
         title="Browse Chefs"
         subtitle="Find the perfect chef for your next meal"
@@ -123,7 +123,11 @@ const BrowseChefs = () => {
       />
 
       {/* Search & Filter Bar */}
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mb: 4 }}>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        className="browse-chefs-filters"
+      >
         <TextField
           fullWidth
           placeholder="Search by food items..."
@@ -136,11 +140,11 @@ const BrowseChefs = () => {
               </InputAdornment>
             ),
           }}
-          sx={{ maxWidth: { sm: 400 } }}
+          className="browse-chefs-search"
         />
-        <FormControl sx={{ minWidth: 200 }}>
+        <FormControl className="browse-chefs-sort">
           <InputLabel>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <Box className="browse-chefs-sort-label">
               <SortIcon fontSize="small" /> Sort by Cost
             </Box>
           </InputLabel>
@@ -167,16 +171,8 @@ const BrowseChefs = () => {
           ))}
         </Grid>
       ) : (
-        <Box
-          sx={{
-            textAlign: "center",
-            py: 8,
-            color: "text.secondary",
-          }}
-        >
-          <RestaurantOutlinedIcon
-            sx={{ fontSize: 64, color: "divider", mb: 2 }}
-          />
+        <Box className="browse-chefs-empty">
+          <RestaurantOutlinedIcon className="browse-chefs-empty-icon" />
           <Typography variant="h6">{errMsg || "No chefs available"}</Typography>
         </Box>
       )}

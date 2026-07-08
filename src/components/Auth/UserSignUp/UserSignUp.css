@@ -1,0 +1,25 @@
+/* UserSignUp.css */
+
+.usersignup-alert {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.usersignup-submit-btn {
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.usersignup-footer-text {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.usersignup-footer-text--last {
+  text-align: center;
+}
+
+.usersignup-footer-link {
+  color: var(--color-primary-dark) !important;
+  font-weight: 600 !important;
+}

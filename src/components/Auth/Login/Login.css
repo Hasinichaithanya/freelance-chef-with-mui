@@ -1,0 +1,20 @@
+/* Login.css */
+
+.login-alert {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.login-submit-btn {
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.login-footer-text {
+  text-align: center;
+}
+
+.login-footer-link {
+  color: var(--color-primary-dark) !important;
+  font-weight: 600 !important;
+}

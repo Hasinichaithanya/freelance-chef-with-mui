@@ -1,16 +1,24 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Box, Alert } from "@mui/material";
-import FileBase64 from "react-file-base64";
-import Cookies from "js-cookie";
-import useApi from "../../hooks/useApi";
-import FormContainer from "../Shared/FormContainer";
-import LocationSelect from "../Shared/LocationSelect";
-import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import { Alert, Box, TextField, Typography } from "@mui/material";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import FileBase64 from "react-file-base64";
+import { useNavigate } from "react-router-dom";
+import useApi from "../../../hooks/useApi";
+import useGenerateDescription from "../../../hooks/useGenerateDescription";
+import { getLocation } from "../../../services/locationService";
+import AppButton from "../../Shared/AppButton/AppButton";
+import FormContainer from "../../Shared/FormContainer/FormContainer";
+import LocationSelect from "../../Shared/LocationSelect/LocationSelect";
+import "./Register.css";
+
+
 
 const Register = () => {
   const { execute } = useApi();
+  const { generateDescription, aiDescError, isGenerating } = useGenerateDescription();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "",
@@ -26,6 +34,7 @@ const Register = () => {
   const [image, setImage] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [locationError, setLocationError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +62,31 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+
+  const handlGenerateDescription = async () => {
+    const description = await generateDescription({
+      experience: profile.experience,
+      fooditems: profile.fooditems,
+    });
+    if (description) {
+      setProfile((prev) => ({ ...prev, specialties: description }));
+    }
+
+  };
+
+  const handleLocationClick = async () => {
+    setLocationError("");
+    try {
+      const { locationName } = await getLocation();
+      setProfile((prev) => ({
+        ...prev,
+        location: locationName.city
+      }));
+    } catch (err) {
+      setLocationError(err.message);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -73,7 +107,7 @@ const Register = () => {
       setIsSubmitted(true);
       const result = await execute("/register", "POST", object);
       if (result) {
-        Cookies.set("userId", JSON.stringify(result.chefDetails.insertedId), {
+        Cookies.set("userId", JSON.stringify(result.chefDetails.id), {
           expires: 10,
         });
         Cookies.set("user", "Chef", { expires: 10 });
@@ -87,6 +121,8 @@ const Register = () => {
       console.error("Error:", error);
     }
   };
+
+
 
   return (
     <FormContainer
@@ -136,7 +172,7 @@ const Register = () => {
         required
       />
 
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box className="field-row">
         <TextField
           fullWidth
           margin="normal"
@@ -163,7 +199,7 @@ const Register = () => {
         />
       </Box>
 
-      <LocationSelect value={profile.location} onChange={handleChange} />
+      <LocationSelect value={profile.location} onChange={handleChange} onLocationClick={handleLocationClick} />
 
       <TextField
         fullWidth
@@ -178,27 +214,18 @@ const Register = () => {
         required
       />
 
-      <Box sx={{ mt: 2, mb: 1 }}>
-        <Typography
-          variant="body2"
-          sx={{
-            color: "text.secondary",
-            mb: 1,
-            display: "flex",
-            alignItems: "center",
-            gap: 0.5,
-          }}
-        >
+      <Box className="register-upload-section">
+        <p className="upload-label">
           <CloudUploadOutlinedIcon fontSize="small" />
           Upload your photo
-        </Typography>
+        </p>
         <FileBase64
           type="file"
           multiple={false}
           onDone={({ base64 }) => setImage({ image: base64 })}
         />
         {errors.image && (
-          <Alert severity="error" sx={{ mt: 1, borderRadius: 2 }}>
+          <Alert severity="error" className="register-alert">
             {errors.image}
           </Alert>
         )}
@@ -218,18 +245,20 @@ const Register = () => {
         helperText={errors.specialties}
         required
       />
-
-      <Button
+      <AppButton startIcon={<AutoAwesomeIcon />} variant="outlined" onClick={handlGenerateDescription} disabled={isGenerating}>
+        {isGenerating ? "Generating..." : "AI"}
+      </AppButton>
+      {aiDescError && <Typography color="error">{aiDescError}</Typography>}
+      <AppButton
         fullWidth
         type="submit"
-        variant="contained"
-        size="large"
+        size="lg"
         startIcon={<RestaurantOutlinedIcon />}
         disabled={isSubmitted}
-        sx={{ mt: 3 }}
+        className="register-submit-btn"
       >
         {isSubmitted ? "Registering..." : "Register"}
-      </Button>
+      </AppButton>
     </FormContainer>
   );
 };

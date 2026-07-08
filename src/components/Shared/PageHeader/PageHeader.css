@@ -1,0 +1,37 @@
+/* PageHeader.css */
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header--center {
+  text-align: center;
+}
+
+.page-header--left {
+  text-align: left;
+}
+
+.page-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.page-header__title-row--center {
+  justify-content: center;
+}
+
+.page-header__title-row--left {
+  justify-content: flex-start;
+}
+
+.page-header__icon {
+  color: var(--color-primary);
+  display: flex;
+}
+
+.page-header__title {
+  /* gradient-text utility applied via className */
+}

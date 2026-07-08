@@ -1,0 +1,15 @@
+/* Register.css */
+
+.register-alert {
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+.register-upload-section {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.register-submit-btn {
+  margin-top: 24px !important;
+}

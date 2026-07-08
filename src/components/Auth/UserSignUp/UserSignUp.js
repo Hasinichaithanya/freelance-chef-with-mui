@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Alert } from "@mui/material";
-import Cookies from "js-cookie";
-import useApi from "../../hooks/useApi";
-import FormContainer from "../Shared/FormContainer";
-import LocationSelect from "../Shared/LocationSelect";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import { Alert, TextField, Typography } from "@mui/material";
+import AppButton from "../../Shared/AppButton/AppButton";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useApi from "../../../hooks/useApi";
+import { getLocation } from "../../../services/locationService";
+import FormContainer from "../../Shared/FormContainer/FormContainer";
+import LocationSelect from "../../Shared/LocationSelect/LocationSelect";
+import "./UserSignUp.css";
 
 const UserSignUp = () => {
   const { execute } = useApi();
@@ -17,6 +20,7 @@ const UserSignUp = () => {
   });
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
+  const [locationError, setLocationError] = useState("");
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -46,13 +50,13 @@ const UserSignUp = () => {
     try {
       const result = await execute("/user-signup", "POST", object);
       if (result.message) {
-        Cookies.set("userId", JSON.stringify(result.id), { expires: 10 });
+        Cookies.set("userId", result.id, { expires: 10 });
         Cookies.set("user", result.user, { expires: 10 });
         navigate("/");
       } else {
         setApiError(
           result.Message ||
-            "Sign up failed. This email may already be registered."
+          "Sign up failed. This email may already be registered."
         );
       }
     } catch (error) {
@@ -64,7 +68,20 @@ const UserSignUp = () => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleLocationClick = async () => {
+    setLocationError("");
+    try {
+      const { locationName } = await getLocation();
+      // Store coords as a readable string for display; adjust to your API's expected format
+      console.log(locationName)
+      setUser((prev) => ({
+        ...prev,
+        location: locationName.city
+      }));
+    } catch (err) {
+      setLocationError(err.message);
+    }
+  };
   return (
     <FormContainer
       title="Create Account"
@@ -72,7 +89,7 @@ const UserSignUp = () => {
       onSubmit={handleSubmit}
     >
       {apiError && (
-        <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+        <Alert severity="error" className="usersignup-alert">
           {apiError}
         </Alert>
       )}
@@ -117,43 +134,45 @@ const UserSignUp = () => {
         helperText={errors.password}
       />
 
-      <LocationSelect value={user.location} onChange={handleChange} />
+      <LocationSelect
+        value={user.location}
+        onChange={handleChange}
+        onLocationClick={handleLocationClick}
+      />
+      {locationError && (
+        <Alert severity="warning" className="usersignup-alert">
+          {locationError}
+        </Alert>
+      )}
 
-      <Button
+      <AppButton
         fullWidth
         type="submit"
-        variant="contained"
-        size="large"
+        size="lg"
         startIcon={<PersonAddOutlinedIcon />}
-        sx={{ mt: 3, mb: 2 }}
+        className="usersignup-submit-btn"
       >
         Sign Up
-      </Button>
+      </AppButton>
 
-      <Typography
-        variant="body2"
-        sx={{ textAlign: "center", color: "text.secondary", mb: 1 }}
-      >
+      <Typography variant="body2" className="usersignup-footer-text auth-link-text">
         Want to register as a Chef?{" "}
         <Typography
           component={Link}
           to="/register"
           variant="body2"
-          sx={{ color: "primary.dark", fontWeight: 600 }}
+          className="usersignup-footer-link"
         >
           Register here
         </Typography>
       </Typography>
-      <Typography
-        variant="body2"
-        sx={{ textAlign: "center", color: "text.secondary" }}
-      >
+      <Typography variant="body2" className="usersignup-footer-text--last auth-link-text">
         Already have an account?{" "}
         <Typography
           component={Link}
           to="/login"
           variant="body2"
-          sx={{ color: "primary.dark", fontWeight: 600 }}
+          className="usersignup-footer-link"
         >
           Login
         </Typography>

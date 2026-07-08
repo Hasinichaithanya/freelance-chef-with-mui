@@ -16,8 +16,9 @@ import {
 import Grid from "@mui/material/Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import PageHeader from "../Shared/PageHeader";
+import PageHeader from "../Shared/PageHeader/PageHeader";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import "./Aboutus.css";
 
 const chefBenefits = [
   "Expand their client base without the need for traditional advertising.",
@@ -46,8 +47,8 @@ const userBenefits = [
 const BenefitsList = ({ items }) => (
   <List dense disablePadding>
     {items.map((item, index) => (
-      <ListItem key={index} sx={{ px: 0 }}>
-        <ListItemIcon sx={{ minWidth: 32 }}>
+      <ListItem key={index} className="aboutus-benefit-item">
+        <ListItemIcon className="aboutus-benefit-icon">
           <CheckCircleOutlineIcon
             fontSize="small"
             sx={{ color: "primary.main" }}
@@ -62,16 +63,9 @@ const BenefitsList = ({ items }) => (
   </List>
 );
 
-const gradientTextSx = {
-  background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  mb: 1.5,
-};
-
 const Aboutus = () => {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" className="aboutus-page">
       <PageHeader
         title="About Us"
         subtitle="Learn how our platform benefits chefs and food lovers"
@@ -82,30 +76,24 @@ const Aboutus = () => {
       <Grid container spacing={4}>
         {/* Chef Card */}
         <Grid size={{ xs: 12 }}>
-          <Card
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              overflow: "hidden",
-            }}
-          >
+          <Card className="aboutus-card">
             <CardMedia
               component="img"
               image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq4S483NhzemDu4sHD7Y5sNAfS-Qi2XxB_Ew&s"
               alt="Freelancing Platform for Chefs"
-              sx={{
-                width: { xs: "100%", md: 360 },
-                height: { xs: 220, md: "auto" },
-                objectFit: "cover",
-              }}
+              className="aboutus-card__image"
             />
-            <Box sx={{ p: { xs: 3, md: 4 }, flex: 1 }}>
-              <Typography variant="h5" sx={gradientTextSx}>
+            <Box className="aboutus-card__body">
+              <Typography
+                variant="h5"
+                className="gradient-text aboutus-card__title"
+              >
                 Elevate Your Chef Career with Our Freelancing Platform
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "text.secondary", mb: 2, lineHeight: 1.7 }}
+                className="aboutus-card__description"
+                sx={{ color: "text.secondary" }}
               >
                 Our platform provides a unique opportunity for chefs to showcase
                 their culinary skills and reach a wider audience. By joining our
@@ -114,7 +102,11 @@ const Aboutus = () => {
 
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
+                  <Typography
+                    variant="subtitle1"
+                    className="aboutus-accordion-title"
+                    sx={{ color: "text.primary" }}
+                  >
                     Benefits for Chefs
                   </Typography>
                 </AccordionSummary>
@@ -128,30 +120,24 @@ const Aboutus = () => {
 
         {/* User Card */}
         <Grid size={{ xs: 12 }}>
-          <Card
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row-reverse" },
-              overflow: "hidden",
-            }}
-          >
+          <Card className="aboutus-card aboutus-card--reverse">
             <CardMedia
               component="img"
               image="https://www.foodiv.com/wp-content/uploads/2023/06/online-ordering-business.jpg"
               alt="Connecting with Culinary Talent"
-              sx={{
-                width: { xs: "100%", md: 360 },
-                height: { xs: 220, md: "auto" },
-                objectFit: "cover",
-              }}
+              className="aboutus-card__image"
             />
-            <Box sx={{ p: { xs: 3, md: 4 }, flex: 1 }}>
-              <Typography variant="h5" sx={gradientTextSx}>
+            <Box className="aboutus-card__body">
+              <Typography
+                variant="h5"
+                className="gradient-text aboutus-card__title"
+              >
                 Connecting You with Culinary Talent
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "text.secondary", mb: 2, lineHeight: 1.7 }}
+                className="aboutus-card__description"
+                sx={{ color: "text.secondary" }}
               >
                 Our platform is designed to provide users with a seamless and
                 delightful culinary experience. By using our freelancing
@@ -160,7 +146,11 @@ const Aboutus = () => {
 
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
+                  <Typography
+                    variant="subtitle1"
+                    className="aboutus-accordion-title"
+                    sx={{ color: "text.primary" }}
+                  >
                     Benefits for Users
                   </Typography>
                 </AccordionSummary>

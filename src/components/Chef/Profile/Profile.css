@@ -1,0 +1,88 @@
+/* Profile.css (ChefProfile card) */
+
+.chef-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+}
+
+.chef-card__avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 24px 8px 8px;
+}
+
+.chef-card__avatar {
+  width: 120px !important;
+  height: 120px !important;
+  border: 3px solid var(--color-primary-light) !important;
+  transition: transform 0.3s ease !important;
+}
+
+.chef-card__avatar:hover {
+  transform: scale(1.05);
+}
+
+.chef-card__content {
+  text-align: center;
+}
+
+.chef-card__name {
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+}
+
+.chef-card__chips {
+  margin-bottom: 12px !important;
+}
+
+.chef-card__chip--price {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+}
+
+.chef-card__chip--price .MuiChip-icon {
+  color: var(--color-white) !important;
+}
+
+.chef-card__actions {
+  justify-content: center;
+  padding: 12px;
+  gap: 8px;
+}
+
+.chef-card__like-btn {
+  border-color: #e0e0e0 !important;
+  color: #6B7280 !important;
+}
+
+.chef-card__like-btn:hover {
+  border-color: var(--color-error) !important;
+  background-color: var(--color-error-hover-bg) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.chef-card__like-btn--active {
+  border-color: var(--color-error) !important;
+  color: var(--color-error) !important;
+}
+
+.chef-dialog-title {
+  font-weight: 700 !important;
+}
+
+.chef-dialog-content-text {
+  color: var(--color-text-secondary) !important;
+}
+
+.chef-dialog-actions {
+  padding: 16px 24px 20px !important;
+}
+
+@media (min-width: 600px) {
+  .chef-card {
+    width: 260px;
+  }
+}
